@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchium — Аналитика матчей</title>
+<meta name="description" content="Профессиональный разбор футбольных матчей на основе данных. Форма команд, статистика, вердикт аналитика — за 49 ₽.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080810;
+  --surface: #0f0f1a;
+  --surface2: #14141f;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0;
+  --muted: #6b6b80;
+  --accent: #c8f035;
+  --accent2: #a8d020;
+  --accent-dim: rgba(200,240,53,0.1);
+  --accent-dim2: rgba(200,240,53,0.05);
+  --red: #ff4444;
+  --gold: #f0c040;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Geologica', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: .4;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(8,8,16,.95), transparent);
+  backdrop-filter: blur(12px);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav-badge {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border2);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grid background */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,240,53,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,53,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
+}
+
+/* Glow blobs */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  background: rgba(200,240,53,0.08);
+  top: -100px; right: -100px;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: rgba(80,120,255,0.06);
+  bottom: 0; left: -80px;
+  animation: drift 15s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(30px, 20px) scale(1.1); }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(200,240,53,0.3);
+  background: var(--accent-dim2);
+  padding: 7px 16px;
+  border-radius: 20px;
+  margin-bottom: 36px;
+  animation: fadeUp .8s ease both;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(.8); }
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 12vw, 160px);
+  line-height: .92;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 8px;
+  animation: fadeUp .8s .1s ease both;
+}
+
+h1 .accent-word {
+  color: var(--accent);
+  display: block;
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 500px;
+  margin: 28px 0 48px;
+  animation: fadeUp .8s .2s ease both;
+  line-height: 1.7;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp .8s .3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: var(--black);
+  font-family: 'Geologica', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 16px 32px;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: .3px;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%);
+  transition: transform .3s ease;
+}
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,240,53,.3); }
+
+.btn-ghost {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+}
+.btn-ghost:hover { color: var(--text); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  animation: fadeUp .8s .4s ease both;
+  flex-wrap: wrap;
+}
+
+.stat-item {}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .5px;
+  margin-top: 4px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SAMPLE ANALYSIS ─── */
+.sample-section {
+  padding: 100px 40px;
+  position: relative;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 6vw, 72px);
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 480px;
+  margin-bottom: 56px;
+}
+
+.sample-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Mock Telegram message */
+.tg-mockup {
+  background: #17212b;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  max-width: 480px;
+  box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(200,240,53,0.05);
+  position: relative;
+}
+
+.tg-header {
+  background: #111b22;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.tg-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #5b4fcf, #1d6fa4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.tg-name { font-size: 14px; font-weight: 600; color: #e8edf2; }
+.tg-online { font-size: 11px; color: var(--accent); }
+
+.tg-body { padding: 16px; }
+
+.tg-msg {
+  background: #182533;
+  border-radius: 4px 14px 14px 14px;
+  padding: 12px 15px 10px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #c8d8e4;
+  border: 1px solid rgba(255,255,255,.05);
+}
+
+.tg-msg-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #e8f4ff;
+  margin-bottom: 2px;
+}
+.tg-msg-badge {
+  font-family: monospace;
+  font-size: 11px;
+  background: #0d1f30;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #6b9ac4;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.tg-divider { color: #2a3f52; font-size: 12px; margin: 8px 0; letter-spacing: 1px; }
+.tg-section-head { font-weight: 600; font-size: 13px; color: #d4e8f5; margin-bottom: 6px; }
+.form-dots { font-size: 14px; line-height: 1.9; }
+.form-dots b { color: #b8d0e4; font-weight: 500; }
+.stat-rows { font-size: 12.5px; color: #9ab8cc; line-height: 1.8; }
+.stat-rows b { color: #cce0f0; }
+.analysis-p { font-size: 12.5px; color: #9ab8cc; line-height: 1.65; margin-bottom: 6px; }
+.verdict-block {
+  background: rgba(76,175,113,0.08);
+  border-left: 3px solid #4caf71;
+  padding: 8px 11px;
+  border-radius: 0 6px 6px 0;
+  font-size: 12.5px;
+  color: #90d4a8;
+  line-height: 1.5;
+  margin: 4px 0;
+}
+.verdict-block b { color: #b2f0c8; }
+.risk-block {
+  font-size: 12px;
+  color: #e8a060;
+  background: rgba(240,160,60,0.07);
+  border-left: 3px solid #e8a060;
+  padding: 6px 10px;
+  border-radius: 0 5px 5px 0;
+  margin-top: 4px;
+}
+.tg-time {
+  font-size: 10.5px;
+  color: #3a5068;
+  text-align: right;
+  margin-top: 5px;
+}
+.tg-footer-code {
+  font-family: monospace;
+  font-size: 10.5px;
+  color: #3a5068;
+  background: #0d1f30;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+/* Two column layout */
+.sample-layout {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 60px;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sample-explain { padding-top: 20px; }
+.explain-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.explain-item:last-child { border-bottom: none; }
+.explain-icon {
+  width: 40px; height: 40px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(200,240,53,0.2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.explain-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.explain-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  padding: 100px 40px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.steps-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 56px;
+}
+
+.step-card {
+  background: var(--surface2);
+  padding: 36px 32px;
+  position: relative;
+  transition: background .2s;
+}
+.step-card:hover { background: #181828; }
+.step-card:first-child { border-radius: 12px 0 0 12px; }
+.step-card:last-child { border-radius: 0 12px 12px 0; }
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  color: rgba(200,240,53,0.08);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.step-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.step-arrow {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px; height: 28px;
+  background: var(--black);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: var(--accent);
+  z-index: 2;
+}
+
+/* ─── PRICING ─── */
+.pricing-section {
+  padding: 100px 40px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 56px auto 0;
+}
+
+.price-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: all .2s;
+  position: relative;
+}
+.price-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+}
+.price-card.featured {
+  background: var(--accent-dim);
+  border-color: rgba(200,240,53,0.3);
+}
+.price-card.featured:hover { border-color: rgba(200,240,53,0.5); }
+
+.featured-badge {
+  position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--black);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.price-name {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.price-featured .price-name { color: var(--accent); }
+
+.price-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--text);
+}
+.price-currency {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  vertical-align: super;
+  margin-right: 2px;
+}
+.price-period {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.price-features {
+  list-style: none;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.price-features li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.price-features li::before {
+  content: '→';
+  color: var(--accent);
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.price-features .featured-feat { color: var(--text); }
+
+/* ─── CTA SECTION ─── */
+.cta-section {
+  padding: 120px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(200,240,53,0.06) 0%, transparent 70%);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cta-inner { position: relative; z-index: 2; }
+
+.cta-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  letter-spacing: 2px;
+  line-height: .95;
+  margin-bottom: 24px;
+}
+
+.cta-title .line2 { color: var(--accent); }
+
+.cta-sub {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+
+.price-highlight {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  border: 1px solid rgba(200,240,53,0.3);
+  background: var(--accent-dim2);
+  padding: 10px 24px;
+  border-radius: 4px;
+  margin-bottom: 36px;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: gap;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 16px 20px; }
+  .hero { padding: 100px 20px 60px; }
+  .sample-section, .how-section, .pricing-section, .cta-section { padding: 72px 20px; }
+  .sample-layout { grid-template-columns: 1fr; }
+  .tg-mockup { max-width: 100%; }
+  .steps-grid { grid-template-columns: 1fr; gap: 2px; }
+  .step-card:first-child { border-radius: 12px 12px 0 0; }
+  .step-card:last-child { border-radius: 0 0 12px 12px; }
+  .step-arrow { display: none; }
+  .hero-stats { gap: 24px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">MATCHIUM</a>
+  <span class="nav-badge">Аналитика матчей</span>
+</nav>
+
+<!-- BLOB BACKGROUNDS -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">⚽ Профессиональная аналитика</div>
+    <h1>
+      РАЗБОР
+      <span class="accent-word">МАТЧА</span>
+    </h1>
+    <p class="hero-sub">Данные о форме команд, голевая статистика и чёткий вердикт аналитика. Прямо в Telegram — за&nbsp;49&nbsp;₽.</p>
+    <div class="hero-cta">
+      <a href="https://t.me/YOUR_BOT_USERNAME" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
+        Попробовать в Telegram
+      </a>
+      <a href="#how" class="btn-ghost">Как это работает →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">49₽</div>
+        <div class="stat-label">за один разбор</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3 МИН</div>
+        <div class="stat-label">время доставки</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1000+</div>
+        <div class="stat-label">лиг в базе</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">без выходных</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SAMPLE ─── -->
+<section class="sample-section">
+  <div class="sample-container">
+    <div class="reveal">
+      <div class="section-label">Пример работы</div>
+      <h2 class="section-title">ЧТО ВЫ ПОЛУЧАЕТЕ</h2>
+      <p class="section-sub">Реальный разбор — структурированный, с данными и чётким выводом. Не гадание, а аналитика.</p>
+    </div>
+
+    <div class="sample-layout reveal">
+      <!-- Telegram mockup -->
+      <div class="tg-mockup">
+        <div class="tg-header">
+          <div class="tg-avatar">M</div>
+          <div>
+            <div class="tg-name">Matchium</div>
+            <div class="tg-online">● онлайн</div>
+          </div>
+        </div>
+        <div class="tg-body">
+          <div class="tg-msg">
+            <div class="tg-msg-title">⚽ Арсенал Тула — Волга Ульяновск</div>
+            <div class="tg-msg-badge">Matchium Premium · аналитика</div>
+
+            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
+
+            <div class="tg-section-head">📊 Форма команд</div>
+            <div class="form-dots">
+              <b>Арсенал Тула:</b><br>
+              🟢 🟢 🟡 🟢 🔴 🟢 🟡 🟢 🟢 🔴<br>
+              <b>Волга:</b><br>
+              🔴 🔴 🟡 🔴 🟢 🔴 🟡 🔴 🟢 🔴
+            </div>
+
+            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
+
+            <div class="tg-section-head">📈 Статистика · 10 матчей</div>
+            <div class="stat-rows">
+              <b>Арсенал Тула:</b> Забито: 14 · Пропущено: 9 · В/Н/П: 7/2/1<br>
+              <b>Волга:</b> Забито: 8 · Пропущено: 13 · В/Н/П: 3/2/5
+            </div>
+
+            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
+
+            <div class="tg-section-head">🔍 Аналитика</div>
+            <div class="analysis-p">Арсенал Тула показывает устойчивую форму: 7 побед из 10, всего 1 поражение. Забитые 14 голов при 9 пропущенных указывают на баланс между атакой и обороной.</div>
+            <div class="analysis-p">Волга в откровенно плохой форме — 5 поражений, 13 пропущенных, три проигрыша подряд. Разрыв в форме между командами существенный.</div>
+
+            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
+
+            <div class="tg-section-head">🎯 Вердикт</div>
+            <div class="verdict-block"><b>П1 или ТБ 2.5</b> — победа Арсенала логично следует из данных. Обе команды в среднем дают больше 2 голов за матч.</div>
+
+            <div class="risk-block">⚠️ <b>Риск:</b> выборка не учитывает кадровые изменения и паузы в расписании.</div>
+
+            <div class="tg-footer-code">Matchium · @matchium_bot · API-Football</div>
+            <div class="tg-time">14:31 ✓✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explanation -->
+      <div class="sample-explain">
+        <div class="explain-item">
+          <div class="explain-icon">📊</div>
+          <div>
+            <div class="explain-title">Визуальная форма команд</div>
+            <div class="explain-body">Точки 🟢🟡🔴 за последние 10 матчей — видишь серию одним взглядом без чтения текста.</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-icon">📈</div>
+          <div>
+            <div class="explain-title">Реальные данные, не мнение</div>
+            <div class="explain-body">Голы за/против, W/D/L за актуальный период. Всё из официальной базы API-Football.</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-icon">🎯</div>
+          <div>
+            <div class="explain-title">Чёткий вердикт</div>
+            <div class="explain-body">Не «возможно победит» — а конкретная идея с обоснованием. Или честное «данных недостаточно».</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-icon">⚡</div>
+          <div>
+            <div class="explain-title">3 минуты с момента заказа</div>
+            <div class="explain-body">Пишешь «Команда 1 — Команда 2», платишь, через 3 минуты получаешь полный разбор.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="how-section" id="how">
+  <div class="steps-container">
+    <div class="reveal">
+      <div class="section-label">Процесс</div>
+      <h2 class="section-title">ТРИ ШАГА</h2>
+      <p class="section-sub">Никаких регистраций, личных кабинетов и ожиданий.</p>
+    </div>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Пишешь матч</div>
+        <div class="step-body">Отправляешь боту название команд в любом формате — на русском, английском, с лигой или без. GPT сам разберёт.</div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Оплачиваешь</div>
+        <div class="step-body">Бот формирует ссылку на оплату через СБП. Никаких карточных данных боту — всё через банк.</div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Получаешь разбор</div>
+        <div class="step-body">Через 3 минуты в чат приходит полная аналитика: форма, статистика, вердикт и главный риск.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ─── -->
+<section class="pricing-section" id="pricing">
+  <div style="max-width:1100px; margin: 0 auto;">
+    <div class="reveal">
+      <div class="section-label">Тарифы</div>
+      <h2 class="section-title">ПРОСТО И ЧЕСТНО</h2>
+      <p class="section-sub">Платишь только за то, что используешь.</p>
+    </div>
+    <div class="pricing-grid reveal">
+
+      <div class="price-card">
+        <div class="price-name">Один разбор</div>
+        <div class="price-amount"><span class="price-currency">₽</span>49</div>
+        <div class="price-period">за матч</div>
+        <ul class="price-features">
+          <li>Форма последних 10 матчей</li>
+          <li>Голевая статистика</li>
+          <li>Аналитический разбор</li>
+          <li>Вердикт и главный риск</li>
+        </ul>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">Выгоднее всего</div>
+        <div class="price-name" style="color: var(--accent);">Расширенный</div>
+        <div class="price-amount"><span class="price-currency">₽</span>149</div>
+        <div class="price-period">за матч</div>
+        <ul class="price-features">
+          <li class="featured-feat">Всё из базового</li>
+          <li class="featured-feat">История личных встреч (H2H)</li>
+          <li class="featured-feat">Прогноз по тоталу</li>
+          <li class="featured-feat">PDF-карточка разбора</li>
+        </ul>
+      </div>
+
+      <div class="price-card">
+        <div class="price-name">Пакет 10 разборов</div>
+        <div class="price-amount"><span class="price-currency">₽</span>390</div>
+        <div class="price-period">экономия 61%</div>
+        <ul class="price-features">
+          <li>10 базовых разборов</li>
+          <li>Баланс не сгорает</li>
+          <li>Подходит для серии туров</li>
+        </ul>
+      </div>
+
+      <div class="price-card">
+        <div class="price-name">Подписка 30 дней</div>
+        <div class="price-amount"><span class="price-currency">₽</span>1490</div>
+        <div class="price-period">в месяц</div>
+        <ul class="price-features">
+          <li>Безлимитные разборы</li>
+          <li>Расширенный формат</li>
+          <li>Приоритетная обработка</li>
+          <li>Для активных бетторов</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <h2 class="cta-title">
+      ПЕРВЫЙ РАЗБОР<br>
+      <span class="line2">ЗА 49 РУБЛЕЙ</span>
+    </h2>
+    <p class="cta-sub">Никакой регистрации. Открываешь бот — и сразу к делу.</p>
+    <div class="price-highlight">MATCHIUM · АНАЛИТИКА МАТЧЕЙ</div>
+    <br>
+    <a href="https://t.me/YOUR_BOT_USERNAME" class="btn-primary" style="display:inline-flex; margin-top: 8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
+      Открыть в Telegram
+    </a>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">MATCHIUM</div>
+  <div class="footer-text">Аналитика футбольных матчей · На основе данных, а не мнений</div>
+  <div class="footer-text" style="color: #3a3a4a;">© 2025 Matchium</div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Stagger children of reveal grids
+document.querySelectorAll('.steps-grid .step-card, .pricing-grid .price-card, .sample-explain .explain-item').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.1) + 's';
+});
+</script>
+</body>
+</html>
