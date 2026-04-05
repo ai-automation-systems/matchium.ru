@@ -660,9 +660,26 @@ footer {
   padding: 40px;
   border-top: 1px solid var(--border);
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.footer-top {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: gap;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-requisites {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .footer-logo {
@@ -960,9 +977,14 @@ footer {
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <div class="footer-logo">MATCHIUM</div>
-  <div class="footer-text">Аналитика футбольных матчей · На основе данных, а не мнений</div>
-  <div class="footer-text" style="color: #3a3a4a;">© 2025 Matchium</div>
+  <div class="footer-top">
+    <div class="footer-logo">MATCHIUM</div>
+    <div class="footer-text">Аналитика футбольных матчей · На основе данных, а не мнений</div>
+    <div class="footer-text" style="color: #3a3a4a;">© 2025 Matchium</div>
+  </div>
+  <div class="footer-requisites">
+    <a href="/oferta.html" style="color: #444; font-size: 12px; text-decoration: none; font-family: inherit; transition: color .2s;" onmouseover="this.style.color='#c8f035'" onmouseout="this.style.color='#444'">Публичная оферта и реквизиты</a>
+  </div>
 </footer>
 
 <script>
