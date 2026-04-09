@@ -1,573 +1,551 @@
-{\rtf1\ansi\ansicpg1251\cocoartf2761
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchium — Аналитика футбольных матчей</title>
+<meta name="description" content="Профессиональный разбор футбольных матчей на основе данных. Форма команд, статистика, вердикт — за 49 ₽ прямо в Telegram.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--black:#080810;--surface:#0f0f1a;--surface2:#14141f;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--muted:#6b6b80;--accent:#c8f035;--accent2:#a8d020;--accent-dim:rgba(200,240,53,0.1);--accent-dim2:rgba(200,240,53,0.05)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Geologica',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:.35}
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-\
-<html lang="ru">\
-<head>\
-<meta charset="UTF-8">\
-<meta name="viewport" content="width=device-width, initial-scale=1.0">\
-<title>Matchium \'97 \uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1092 \u1091 \u1090 \u1073 \u1086 \u1083 \u1100 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </title>\
-<meta name="description" content="\uc0\u1055 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1099 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1092 \u1091 \u1090 \u1073 \u1086 \u1083 \u1100 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \u1085 \u1072  \u1086 \u1089 \u1085 \u1086 \u1074 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 . \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 , \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \'97 \u1079 \u1072  49 \u8381  \u1087 \u1088 \u1103 \u1084 \u1086  \u1074  Telegram.">\
-<link rel="preconnect" href="https://fonts.googleapis.com">\
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">\
-<style>\
-:root\{--black:#080810;--surface:#0f0f1a;--surface2:#14141f;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--muted:#6b6b80;--accent:#c8f035;--accent2:#a8d020;--accent-dim:rgba(200,240,53,0.1);--accent-dim2:rgba(200,240,53,0.05)\}\
-*,*::before,*::after\{box-sizing:border-box;margin:0;padding:0\}\
-html\{scroll-behavior:smooth\}\
-body\{background:var(--black);color:var(--text);font-family:'Geologica',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden\}\
-body::before\{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:.35\}\
-\
-/* INTRO */\
-#intro\{position:fixed;inset:0;z-index:9000;background:var(\'96black);display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none\}\
-#intro.done\{opacity:0;transition:opacity .7s ease;pointer-events:none\}\
-.ball-trail\{position:absolute;font-size:72px;animation:ballFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;filter:drop-shadow(0 0 40px rgba(200,240,53,0.5));will-change:transform,opacity;user-select:none;line-height:1\}\
-@keyframes ballFly\{0%\{transform:translate(-65vw,25vh) rotate(0deg) scale(.5);opacity:0\}15%\{opacity:1\}55%\{transform:translate(2vw,-2vh) rotate(380deg) scale(1.05);opacity:1\}75%\{transform:translate(2vw,-2vh) rotate(410deg) scale(1);opacity:1\}100%\{transform:translate(72vw,-28vh) rotate(760deg) scale(.3);opacity:0\}\}\
-.streak\{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.28),transparent);border-radius:2px;animation:streakFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;pointer-events:none;opacity:0\}\
-.s1\{width:220px;top:50%;left:28%;animation-delay:.12s\}\
-.s2\{width:150px;top:calc(50% + 18px);left:26%;animation-delay:.18s\}\
-.s3\{width:100px;top:calc(50% - 18px);left:31%;animation-delay:.24s\}\
-@keyframes streakFly\{0%\{opacity:0;transform:scaleX(0) translateX(-50px)\}25%\{opacity:.7;transform:scaleX(1) translateX(0)\}65%\{opacity:.7;transform:scaleX(1) translateX(90px)\}100%\{opacity:0;transform:scaleX(.1) translateX(220px)\}\}\
-.intro-logo\{position:absolute;font-family:\'91Bebas Neue\'92,sans-serif;font-size:60px;letter-spacing:10px;color:var(\'96accent);opacity:0;transform:scale(.85);animation:logoIn .5s ease .95s forwards;text-shadow:0 0 60px rgba(200,240,53,0.4)\}\
-@keyframes logoIn\{to\{opacity:1;transform:scale(1)\}\}\
-.intro-sub\{position:absolute;top:calc(50% + 50px);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(\'96muted);opacity:0;animation:logoIn .4s ease 1.15s forwards\}\
-#site\{opacity:0;transition:opacity .9s ease\}\
-#site.visible\{opacity:1\}\
-\
-/* BLOBS */\
-.blob\{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0\}\
-.blob1\{width:600px;height:600px;background:rgba(200,240,53,0.07);top:-150px;right:-150px;animation:drift 14s ease-in-out infinite alternate\}\
-.blob2\{width:450px;height:450px;background:rgba(60,80,200,0.05);bottom:-50px;left:-100px;animation:drift 18s ease-in-out infinite alternate-reverse\}\
-@keyframes drift\{from\{transform:translate(0,0) scale(1)\}to\{transform:translate(30px,20px) scale(1.1)\}\}\
-\
-/* NAV */\
-nav\{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,16,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(\'96border)\}\
-.nav-logo\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:26px;letter-spacing:4px;color:var(\'96accent);text-decoration:none\}\
-.nav-links\{display:flex;gap:28px;align-items:center\}\
-.nav-link\{font-size:13px;color:var(\'96muted);text-decoration:none;transition:color .2s;font-weight:400\}\
-.nav-link:hover\{color:var(\'96text)\}\
-.nav-cta\{font-family:\'91Geologica\'92,sans-serif;font-size:13px;font-weight:500;color:var(\'96black);background:var(\'96accent);border:none;padding:9px 20px;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s\}\
-.nav-cta:hover\{background:var(\'96accent2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,240,53,0.25)\}\
-\
-/* HERO */\
-.hero\{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden\}\
-.hero::after\{content:\'92\'92;position:absolute;inset:0;background-image:linear-gradient(rgba(200,240,53,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,240,53,0.025) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 85% 80% at 25% 40%,black 10%,transparent 75%);pointer-events:none\}\
-.hero-inner\{position:relative;z-index:2;max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 460px;gap:72px;align-items:center\}\
-\
-.hero-eyebrow\{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;opacity:0;animation:fadeUp .8s .1s ease forwards\}\
-.ey-dot\{width:7px;height:7px;background:var(\'96accent);border-radius:50%;animation:pulse 2.5s ease-in-out infinite\}\
-@keyframes pulse\{0%,100%\{box-shadow:0 0 0 0 rgba(200,240,53,.5)\}50%\{box-shadow:0 0 0 7px rgba(200,240,53,0)\}\}\
-.ey-text\{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(\'96accent)\}\
-\
-h1\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(76px,10.5vw,152px);line-height:.88;letter-spacing:2px;opacity:0;animation:fadeUp .8s .2s ease forwards\}\
-h1 .l1\{display:block;color:rgba(232,232,240,0.15)\}\
-h1 .l2\{display:block;color:var(\'96text)\}\
-h1 .l3\{display:block;color:var(\'96accent)\}\
-\
-.hero-desc\{font-size:17px;font-weight:300;color:#8888a0;max-width:480px;margin:28px 0 44px;line-height:1.75;opacity:0;animation:fadeUp .8s .3s ease forwards\}\
-.hero-desc strong\{color:var(\'96text);font-weight:500\}\
-\
-.hero-actions\{display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .4s ease forwards\}\
-.btn-primary\{display:inline-flex;align-items:center;gap:10px;background:var(\'96accent);color:var(\'96black);font-family:\'91Geologica\'92,sans-serif;font-size:15px;font-weight:600;padding:15px 30px;border-radius:4px;text-decoration:none;position:relative;overflow:hidden;transition:all .25s\}\
-.btn-primary::after\{content:\'92\'92;position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s ease\}\
-.btn-primary:hover::after\{transform:translateX(0)\}\
-.btn-primary:hover\{transform:translateY(-2px);box-shadow:0 10px 36px rgba(200,240,53,.3)\}\
-.btn-ghost\{font-size:14px;color:var(\'96muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;font-weight:400\}\
-.btn-ghost:hover\{color:var(\'96text)\}\
-\
-.hero-stats\{display:flex;gap:0;margin-top:64px;padding-top:40px;border-top:1px solid var(\'96border);opacity:0;animation:fadeUp .8s .5s ease forwards\}\
-.stat-item\{flex:1;padding-right:28px;border-right:1px solid var(\'96border)\}\
-.stat-item:last-child\{border-right:none;padding-left:28px;padding-right:0\}\
-.stat-item:not(:first-child):not(:last-child)\{padding:0 28px\}\
-.stat-num\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:44px;color:var(\'96accent);letter-spacing:1px;line-height:1\}\
-.stat-label\{font-size:12px;color:var(\'96muted);margin-top:5px;letter-spacing:.3px\}\
-\
-@keyframes fadeUp\{from\{opacity:0;transform:translateY(24px)\}to\{opacity:1;transform:translateY(0)\}\}\
-\
-/* HERO TG CARD \'97 full rich example */\
-.hero-card\{position:relative;opacity:0;animation:fadeUp .9s .6s ease forwards\}\
-.hcg1\{position:absolute;width:200px;height:200px;background:rgba(200,240,53,0.12);border-radius:50%;filter:blur(60px);top:-40px;right:-40px;pointer-events:none\}\
-.hcg2\{position:absolute;width:150px;height:150px;background:rgba(60,80,255,0.08);border-radius:50%;filter:blur(50px);bottom:-30px;left:-20px;pointer-events:none\}\
-\
-.tg-phone\{background:#17212b;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(200,240,53,0.04),inset 0 1px 0 rgba(255,255,255,0.05);position:relative\}\
-.tg-phone::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)\}\
-.tg-bar\{background:#0d1923;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05)\}\
-.tg-ava\{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1d5f8a,#0d3a56);display:flex;align-items:center;justify-content:center;font-family:\'91Bebas Neue\'92,sans-serif;font-size:15px;color:var(\'96accent);letter-spacing:1px;flex-shrink:0;border:1px solid rgba(200,240,53,0.2)\}\
-.tg-nm\{font-size:13px;font-weight:600;color:#e0eaf4\}\
-.tg-on\{font-size:11px;color:var(\'96accent)\}\
-.tg-body\{padding:14px;background:#17212b\}\
-.tg-msg\{background:#1c2f3f;border-radius:4px 14px 14px 14px;padding:14px 16px 11px;font-size:13px;line-height:1.65;color:#b0c8d8;border:1px solid rgba(255,255,255,0.04)\}\
-\
-.tm-t\{font-size:15px;font-weight:700;color:#e8f4ff;margin-bottom:3px\}\
-.tm-b\{font-family:monospace;font-size:11px;color:#4a7a9b;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:10px\}\
-.tm-d\{color:#1a3348;font-size:11px;margin:9px 0;letter-spacing:.5px\}\
-.tm-sh\{font-size:13px;font-weight:600;color:#c0d8e8;margin-bottom:6px\}\
-.fl\{font-size:13px;line-height:2.1\}\
-.fl b\{color:#90b4c8;font-weight:500\}\
-.sb\{font-size:12.5px;color:#7a9eb0;line-height:2\}\
-.sb b\{color:#aaccdc;font-weight:500\}\
-.ap\{font-size:12.5px;color:#7a9eb0;line-height:1.7;margin-bottom:6px\}\
-.vb\{background:rgba(60,180,100,0.09);border-left:2.5px solid #3cb464;padding:10px 13px;border-radius:0 7px 7px 0;font-size:12.5px;color:#7dd4a0;line-height:1.6;margin:5px 0\}\
-.vb b\{color:#b0f0c8\}\
-.rb\{font-size:12px;color:#d4904a;background:rgba(212,144,74,0.07);border-left:2.5px solid #d4904a;padding:7px 12px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5\}\
-.tm-f\{font-family:monospace;font-size:10px;color:#243444;background:rgba(0,0,0,.3);padding:2px 7px;border-radius:3px;display:inline-block;margin-top:10px\}\
-.tm-ti\{font-size:10px;color:#243444;text-align:right;margin-top:3px\}\
-\
-/* MARQUEE */\
-.mq-wrap\{overflow:hidden;border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border);background:var(\'96surface);padding:13px 0;position:relative;z-index:2\}\
-.mq-track\{display:flex;width:max-content;animation:mq 30s linear infinite\}\
-.mq-item\{display:flex;align-items:center;gap:10px;padding:0 36px;font-size:11.5px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:var(\'96muted);white-space:nowrap\}\
-.mq-item span\{color:var(\'96accent);font-size:13px\}\
-@keyframes mq\{from\{transform:translateX(0)\}to\{transform:translateX(-50%)\}\}\
-\
-/* SECTION COMMONS */\
-section\{position:relative;z-index:2\}\
-.s-ey\{font-size:10.5px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(\'96accent);margin-bottom:14px;display:flex;align-items:center;gap:10px\}\
-.s-ey::before\{content:\'92\'92;width:20px;height:1px;background:var(\'96accent)\}\
-.s-title\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(44px,6vw,78px);line-height:.9;letter-spacing:1.5px;color:var(\'96text);margin-bottom:14px\}\
-.s-sub\{font-size:15px;font-weight:300;color:var(\'96muted);max-width:500px;line-height:1.75\}\
-\
-/* WHAT YOU GET \'97 features only, no panel */\
-.what-sec\{padding:120px 48px\}\
-.what-in\{max-width:1160px;margin:0 auto\}\
-.what-head\{margin-bottom:56px\}\
-.what-head .s-sub\{margin-top:16px\}\
-\
-.feat-grid\{display:grid;grid-template-columns:repeat(4,1fr);gap:3px\}\
-.feat-card\{background:var(\'96surface2);padding:32px 28px;border-radius:0;transition:background .2s;position:relative\}\
-.feat-card:first-child\{border-radius:14px 0 0 14px\}\
-.feat-card:last-child\{border-radius:0 14px 14px 0\}\
-.feat-card:hover\{background:#13131f\}\
-.feat-card::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,0.08),transparent)\}\
-.feat-num\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:52px;color:rgba(200,240,53,0.07);line-height:1;margin-bottom:16px;transition:color .25s;letter-spacing:1px\}\
-.feat-card:hover .feat-num\{color:rgba(200,240,53,0.12)\}\
-.feat-ic\{font-size:24px;margin-bottom:12px\}\
-.feat-t\{font-size:15px;font-weight:500;color:var(\'96text);margin-bottom:8px\}\
-.feat-b\{font-size:13px;color:var(\'96muted);line-height:1.7\}\
-\
-/* HOW */\
-.how-sec\{padding:120px 48px;background:var(\'96surface);border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border)\}\
-.how-in\{max-width:1160px;margin:0 auto\}\
-.steps\{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:60px\}\
-.step\{background:var(\'96surface2);padding:40px 34px;position:relative;transition:background .2s\}\
-.step:first-child\{border-radius:14px 0 0 14px\}\
-.step:last-child\{border-radius:0 14px 14px 0\}\
-.step:hover\{background:#13131f\}\
-.step-n\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:88px;line-height:.9;color:rgba(200,240,53,0.06);letter-spacing:2px;margin-bottom:20px;transition:color .25s\}\
-.step:hover .step-n\{color:rgba(200,240,53,0.10)\}\
-.step-i\{font-size:26px;margin-bottom:14px\}\
-.step-h\{font-size:17px;font-weight:500;color:var(\'96text);margin-bottom:9px\}\
-.step-p\{font-size:13px;color:var(\'96muted);line-height:1.7\}\
-.step-a\{position:absolute;right:-15px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:var(\'96black);border:1px solid var(\'96border2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(\'96accent);font-size:13px;z-index:3;box-shadow:0 0 0 4px var(\'96black)\}\
-\
-/* PRICING */\
-.pr-sec\{padding:120px 48px\}\
-.pr-in\{max-width:1160px;margin:0 auto\}\
-.pr-top\{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px\}\
-.pr-note\{font-size:14px;color:var(\'96muted);max-width:280px;text-align:right;line-height:1.65\}\
-.pr-cards\{display:grid;grid-template-columns:repeat(3,1fr);gap:14px\}\
-.pc\{background:var(\'96surface2);border:1px solid var(\'96border);border-radius:14px;padding:30px 26px;position:relative;transition:all .25s;overflow:hidden\}\
-.pc::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)\}\
-.pc:hover\{border-color:var(\'96border2);transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.4)\}\
-.pc.feat\{background:linear-gradient(160deg,rgba(200,240,53,0.07) 0%,var(\'96surface2) 60%);border-color:rgba(200,240,53,0.22)\}\
-.pc.feat::before\{background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)\}\
-.pc.feat:hover\{border-color:rgba(200,240,53,0.38);box-shadow:0 20px 60px rgba(200,240,53,0.07)\}\
-.pc-hot\{position:absolute;top:18px;right:18px;font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:var(\'96accent);color:var(\'96black);padding:3px 10px;border-radius:20px\}\
-.pc-nm\{font-size:10.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(\'96muted);margin-bottom:18px\}\
-.feat .pc-nm\{color:var(\'96accent)\}\
-.pc-am\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:68px;line-height:1;color:var(\'96text);letter-spacing:1px\}\
-.pc-cu\{font-size:30px;vertical-align:super;color:#8888a0;margin-right:2px\}\
-.pc-pe\{font-size:13px;color:var(\'96muted);margin-top:5px\}\
-.pc-sv\{display:inline-block;font-size:11px;font-weight:500;color:var(\'96accent);background:var(\'96accent-dim2);border:1px solid rgba(200,240,53,0.18);padding:3px 10px;border-radius:4px;margin:8px 0 0\}\
-.pc-ln\{height:1px;background:var(\'96border);margin:22px 0\}\
-.pc-li\{list-style:none\}\
-.pc-li li\{display:flex;gap:9px;font-size:13px;color:#8888a0;padding:5px 0;line-height:1.5;align-items:flex-start\}\
-.pc-li li::before\{content:\'91\uc0\u10003 \'92;color:var(\'96accent);font-size:11px;flex-shrink:0;margin-top:2px;font-weight:700\}\
-.pc-btn\{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:26px;padding:13px 20px;border-radius:6px;font-family:\'91Geologica\'92,sans-serif;font-size:14px;font-weight:500;text-decoration:none;transition:all .22s;border:none;cursor:pointer\}\
-.pc-o\{background:transparent;border:1px solid var(\'96border2);color:#8888a0\}\
-.pc-o:hover\{border-color:rgba(200,240,53,0.3);color:var(\'96accent);background:var(\'96accent-dim2)\}\
-.pc-s\{background:var(\'96accent);color:var(\'96black)\}\
-.pc-s:hover\{background:var(\'96accent2);box-shadow:0 8px 28px rgba(200,240,53,0.28);transform:translateY(-1px)\}\
-\
-/* TRUST */\
-.tr-sec\{padding:64px 48px;background:var(\'96surface);border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border)\}\
-.tr-grid\{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(\'96border);border-radius:14px;overflow:hidden\}\
-.tr-item\{background:var(\'96surface2);padding:32px 28px;text-align:center;transition:background .2s\}\
-.tr-item:hover\{background:#131320\}\
-.tr-ic\{font-size:26px;margin-bottom:12px\}\
-.tr-t\{font-size:14px;font-weight:500;color:var(\'96text);margin-bottom:7px\}\
-.tr-b\{font-size:12.5px;color:var(\'96muted);line-height:1.65\}\
-\
-/* CTA */\
-.cta-sec\{padding:160px 48px;text-align:center;position:relative;overflow:hidden\}\
-.cta-sec::before\{content:\'92\'92;position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(200,240,53,0.05) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none\}\
-.cta-in\{position:relative;z-index:2\}\
-.cta-h\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(58px,9vw,120px);line-height:.88;letter-spacing:2px;margin-bottom:28px\}\
-.cta-h .c1\{display:block;color:rgba(232,232,240,0.12)\}\
-.cta-h .c2\{display:block;color:var(\'96text)\}\
-.cta-h .c3\{display:block;color:var(\'96accent)\}\
-.cta-p\{font-size:16px;color:var(\'96muted);margin-bottom:44px;line-height:1.7\}\
-.cta-pill\{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(200,240,53,0.18);background:var(\'96accent-dim2);padding:9px 22px;border-radius:40px;margin-bottom:36px;font-size:12px;color:var(\'96accent);letter-spacing:1px;font-weight:500\}\
-.cta-pill::before\{content:\'92\'92;width:6px;height:6px;background:var(\'96accent);border-radius:50%;animation:pulse 2s ease-in-out infinite\}\
-\
-/* FOOTER */\
-footer\{border-top:1px solid var(\'96border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;z-index:2\}\
-.f-logo\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:20px;letter-spacing:4px;color:var(\'96accent)\}\
-.f-links\{display:flex;gap:24px\}\
-.f-links a\{font-size:12px;color:var(\'96muted);text-decoration:none;transition:color .2s\}\
-.f-links a:hover\{color:var(\'96text)\}\
-.f-copy\{font-size:12px;color:#333346\}\
-\
-/* REVEAL */\
-.reveal\{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease\}\
-.reveal.on\{opacity:1;transform:none\}\
-\
-/* RESPONSIVE */\
-@media(max-width:1024px)\{\
-.hero-inner\{grid-template-columns:1fr;gap:56px\}\
-.hero-card\{max-width:480px\}\
-.feat-grid\{grid-template-columns:1fr 1fr;gap:3px\}\
-.feat-card:nth-child(2)\{border-radius:0 14px 0 0\}\
-.feat-card:nth-child(3)\{border-radius:0 0 0 14px\}\
-.feat-card:first-child\{border-radius:14px 0 0 0\}\
-.feat-card:last-child\{border-radius:0 0 14px 0\}\
-.steps\{grid-template-columns:1fr;gap:3px\}\
-.step:first-child\{border-radius:14px 14px 0 0\}\
-.step:last-child\{border-radius:0 0 14px 14px\}\
-.step-a\{display:none\}\
-.pr-cards\{grid-template-columns:1fr\}\
-.tr-grid\{grid-template-columns:1fr 1fr\}\
-\}\
-@media(max-width:768px)\{\
-nav\{padding:0 20px\}\
-.nav-links .nav-link\{display:none\}\
-.hero,.what-sec,.how-sec,.pr-sec,.tr-sec,.cta-sec\{padding-left:20px;padding-right:20px\}\
-footer\{padding:28px 20px;flex-direction:column;text-align:center\}\
-.hero-stats\{flex-wrap:wrap;gap:20px\}\
-.stat-item\{border-right:none!important;padding:0!important\}\
-.pr-top\{flex-direction:column;align-items:flex-start\}\
-.pr-note\{text-align:left\}\
-.tr-grid\{grid-template-columns:1fr\}\
-.feat-grid\{grid-template-columns:1fr\}\
-.feat-card\{border-radius:0!important\}\
-.feat-card:first-child\{border-radius:14px 14px 0 0!important\}\
-.feat-card:last-child\{border-radius:0 0 14px 14px!important\}\
-.ball-trail\{font-size:52px\}\
-.intro-logo\{font-size:44px;letter-spacing:7px\}\
-\}\
-</style>\
-\
-</head>\
-<body>\
-\
-<!-- INTRO -->\
-\
-<div id="intro">\
-  <div class="streak s1"></div>\
-  <div class="streak s2"></div>\
-  <div class="streak s3"></div>\
-  <div class="ball-trail">\uc0\u9917 </div>\
-  <div class="intro-logo">MATCHIUM</div>\
-  <div class="intro-sub">\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </div>\
-</div>\
-\
-<!-- SITE -->\
-\
-<div id="site">\
-<div class="blob blob1"></div>\
-<div class="blob blob2"></div>\
-\
-<nav>\
-  <a class="nav-logo" href="#">MATCHIUM</a>\
-  <div class="nav-links">\
-    <a class="nav-link" href="#how">\uc0\u1050 \u1072 \u1082  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090 </a>\
-    <a class="nav-link" href="#pricing">\uc0\u1062 \u1077 \u1085 \u1099 </a>\
-    <a class="nav-cta" href="https://t.me/matchium_bot" target="_blank">\uc0\u1054 \u1090 \u1082 \u1088 \u1099 \u1090 \u1100  \u1073 \u1086 \u1090 \u1072  \u8594 </a>\
-  </div>\
-</nav>\
-\
-<!-- HERO -->\
-\
-<section class="hero">\
-  <div class="hero-inner">\
-    <div>\
-      <div class="hero-eyebrow"><div class="ey-dot"></div><span class="ey-text">\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \'b7 Telegram</span></div>\
-      <h1><span class="l1">\uc0\u1044 \u1040 \u1053 \u1053 \u1067 \u1045 </span><span class="l2">\u1053 \u1045 </span><span class="l3">\u1052 \u1053 \u1045 \u1053 \u1048 \u1071 </span></h1>\
-      <p class="hero-desc">\uc0\u1055 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1099 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1083 \u1102 \u1073 \u1086 \u1075 \u1086  \u1084 \u1072 \u1090 \u1095 \u1072  \'97 \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1075 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1080  \u1095 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 . \u1055 \u1088 \u1103 \u1084 \u1086  \u1074  Telegram, \u1079 \u1072  <strong>49 \u8381 </strong>.</p>\
-      <div class="hero-actions">\
-        <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank">\
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>\
-          \uc0\u1055 \u1086 \u1087 \u1088 \u1086 \u1073 \u1086 \u1074 \u1072 \u1090 \u1100  \u1079 \u1072  49 \u8381 \
-        </a>\
-        <a href="#how" class="btn-ghost">\uc0\u1050 \u1072 \u1082  \u1101 \u1090 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u8594 </a>\
-      </div>\
-      <div class="hero-stats">\
-        <div class="stat-item"><div class="stat-num">49\uc0\u8381 </div><div class="stat-label">\u1086 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div></div>\
-        <div class="stat-item"><div class="stat-num">3 \uc0\u1052 \u1048 \u1053 </div><div class="stat-label">\u1076 \u1086  \u1087 \u1086 \u1083 \u1091 \u1095 \u1077 \u1085 \u1080 \u1103  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1072 </div></div>\
-        <div class="stat-item"><div class="stat-num">1200+</div><div class="stat-label">\uc0\u1083 \u1080 \u1075  \u1074  \u1073 \u1072 \u1079 \u1077 </div></div>\
-        <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">\uc0\u1073 \u1077 \u1079  \u1074 \u1099 \u1093 \u1086 \u1076 \u1085 \u1099 \u1093 </div></div>\
-      </div>\
-    </div>\
-\
-```\
-<!-- TG CARD \'97 rich example -->\
-<div class="hero-card">\
-  <div class="hcg1"></div><div class="hcg2"></div>\
-  <div class="tg-phone">\
-    <div class="tg-bar">\
-      <div class="tg-ava">M</div>\
-      <div><div class="tg-nm">Matchium</div><div class="tg-on">\uc0\u9679  \u1086 \u1085 \u1083 \u1072 \u1081 \u1085 </div></div>\
-    </div>\
-    <div class="tg-body">\
-      <div class="tg-msg">\
-        <div class="tm-t">\uc0\u9917  \u1047 \u1077 \u1085 \u1080 \u1090  \'97 \u1062 \u1057 \u1050 \u1040 </div>\
-        <span class="tm-b">Matchium \'b7 \uc0\u1072 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 </span>\
-\
-        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
-        <div class="tm-sh">\uc0\u55357 \u56522  \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
-        <div class="fl">\
-          <b>\uc0\u1047 \u1077 \u1085 \u1080 \u1090 :</b><br>\u55357 \u57314  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314  \u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57314  \u55357 \u57314  \u55357 \u57313 <br>\
-          <b>\uc0\u1062 \u1057 \u1050 \u1040 :</b><br>\u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314  \u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314 \
-        </div>\
-\
-        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
-        <div class="tm-sh">\uc0\u55357 \u56520  \u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \'b7 10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </div>\
-        <div class="sb">\
-          <b>\uc0\u1047 \u1077 \u1085 \u1080 \u1090 :</b> \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 22 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 9 \'b7 \u1042 /\u1053 /\u1055 : 7/2/1<br>\
-          \uc0\u1044 \u1086 \u1084 \u1072  \u1042 /\u1053 /\u1055 : 4/1/0 \'b7 \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 13 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 4<br>\
-          <b>\uc0\u1062 \u1057 \u1050 \u1040 :</b> \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 17 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 12 \'b7 \u1042 /\u1053 /\u1055 : 6/2/2<br>\
-          \uc0\u1053 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \u1042 /\u1053 /\u1055 : 2/1/2 \'b7 \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 6 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 8\
-        </div>\
-\
-        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
-        <div class="tm-sh">\uc0\u55357 \u56589  \u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 </div>\
-        <div class="ap">\uc0\u1047 \u1077 \u1085 \u1080 \u1090  \u1076 \u1086 \u1084 \u1072  \'97 \u1076 \u1088 \u1091 \u1075 \u1072 \u1103  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 . 4 \u1087 \u1086 \u1073 \u1077 \u1076 \u1099  \u1080 \u1079  5 \u1076 \u1086 \u1084 \u1072 \u1096 \u1085 \u1080 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 , 13 \u1079 \u1072 \u1073 \u1080 \u1090 \u1099 \u1093  \u1087 \u1088 \u1080  \u1083 \u1080 \u1096 \u1100  4 \u1087 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1085 \u1099 \u1093  \'97 \u1083 \u1091 \u1095 \u1096 \u1080 \u1081  \u1087 \u1086 \u1082 \u1072 \u1079 \u1072 \u1090 \u1077 \u1083 \u1100  \u1089 \u1088 \u1077 \u1076 \u1080  \u1090 \u1086 \u1087 -6 \u1056 \u1055 \u1051 . \u1057 \u1088 \u1077 \u1076 \u1085 \u1103 \u1103  \u1088 \u1077 \u1079 \u1091 \u1083 \u1100 \u1090 \u1072 \u1090 \u1080 \u1074 \u1085 \u1086 \u1089 \u1090 \u1100  2.6 \u1075 \u1086 \u1083 \u1072  \u1079 \u1072  \u1076 \u1086 \u1084 \u1072 \u1096 \u1085 \u1080 \u1081  \u1084 \u1072 \u1090 \u1095 .</div>\
-        <div class="ap">\uc0\u1062 \u1057 \u1050 \u1040  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \u1088 \u1077 \u1079 \u1082 \u1086  \u1089 \u1076 \u1072 \u1105 \u1090 : \u1090 \u1086 \u1083 \u1100 \u1082 \u1086  2 \u1087 \u1086 \u1073 \u1077 \u1076 \u1099  \u1080 \u1079  5, \u1087 \u1088 \u1086 \u1087 \u1091 \u1089 \u1082 \u1072 \u1077 \u1090  \u1074  \u1089 \u1088 \u1077 \u1076 \u1085 \u1077 \u1084  1.6 \u1079 \u1072  \u1080 \u1075 \u1088 \u1091 . \u1042  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1093  3 \u1074 \u1099 \u1077 \u1079 \u1076 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1072 \u1093  \'97 0 \u1095 \u1080 \u1089 \u1090 \u1099 \u1093  \u1083 \u1080 \u1089 \u1090 \u1086 \u1074 . \u1040 \u1090 \u1072 \u1082 \u1072  \u1074  \u1075 \u1086 \u1089 \u1090 \u1103 \u1093  \u1079 \u1072 \u1073 \u1080 \u1074 \u1072 \u1077 \u1090  1.2 \u1074  \u1089 \u1088 \u1077 \u1076 \u1085 \u1077 \u1084 .</div>\
-        <div class="ap">\uc0\u1056 \u1072 \u1079 \u1085 \u1080 \u1094 \u1072  \u1074  xG (\u1086 \u1078 \u1080 \u1076 \u1072 \u1077 \u1084 \u1099 \u1093  \u1075 \u1086 \u1083 \u1072 \u1093 ) \u1076 \u1086 \u1087 \u1086 \u1083 \u1085 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1087 \u1086 \u1076 \u1090 \u1074 \u1077 \u1088 \u1078 \u1076 \u1072 \u1077 \u1090  \u1087 \u1088 \u1077 \u1080 \u1084 \u1091 \u1097 \u1077 \u1089 \u1090 \u1074 \u1086  \u1093 \u1086 \u1079 \u1103 \u1077 \u1074 : \u1047 \u1077 \u1085 \u1080 \u1090  \u1076 \u1086 \u1084 \u1072  \u1089 \u1086 \u1079 \u1076 \u1072 \u1105 \u1090  2.1 xG, \u1062 \u1057 \u1050 \u1040  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \'97 1.0 xG \u1087 \u1088 \u1086 \u1090 \u1080 \u1074 .</div>\
-\
-        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
-        <div class="tm-sh">\uc0\u55356 \u57263  \u1042 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
-        <div class="vb"><b>\uc0\u1055 1 + \u1058 \u1041  2.5</b> \'97 \u1047 \u1077 \u1085 \u1080 \u1090  \u1074 \u1099 \u1080 \u1075 \u1088 \u1099 \u1074 \u1072 \u1077 \u1090  \u1076 \u1086 \u1084 \u1072  \u1074  80% \u1089 \u1083 \u1091 \u1095 \u1072 \u1077 \u1074  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1093  10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 . \u1062 \u1057 \u1050 \u1040  \u1074 \u1099 \u1077 \u1079 \u1076 \u1085 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1086 \u1076 \u1085 \u1072  \u1080 \u1079  \u1093 \u1091 \u1076 \u1096 \u1080 \u1093  \u1074  \u1083 \u1080 \u1075 \u1077 . \u1054 \u1073 \u1072  \u1082 \u1083 \u1091 \u1073 \u1072  \u1088 \u1077 \u1079 \u1091 \u1083 \u1100 \u1090 \u1072 \u1090 \u1080 \u1074 \u1085 \u1099  \'97 \u1084 \u1072 \u1090 \u1095  \u1076 \u1086 \u1083 \u1078 \u1077 \u1085  \u1073 \u1099 \u1090 \u1100  \u1075 \u1086 \u1083 \u1077 \u1074 \u1099 \u1084 .</div>\
-\
-        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
-        <div class="tm-sh">\uc0\u9888 \u65039  \u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </div>\
-        <div class="rb">\uc0\u1044 \u1077 \u1088 \u1073 \u1080  \u1074 \u1089 \u1077 \u1075 \u1076 \u1072  \u1085 \u1077 \u1087 \u1088 \u1077 \u1076 \u1089 \u1082 \u1072 \u1079 \u1091 \u1077 \u1084 \u1086  \'97 \u1084 \u1086 \u1090 \u1080 \u1074 \u1072 \u1094 \u1080 \u1103  \u1062 \u1057 \u1050 \u1040  \u1074  \u1087 \u1088 \u1080 \u1085 \u1094 \u1080 \u1087 \u1080 \u1072 \u1083 \u1100 \u1085 \u1086 \u1084  \u1084 \u1072 \u1090 \u1095 \u1077  \u1084 \u1086 \u1078 \u1077 \u1090  \u1074 \u1099 \u1088 \u1086 \u1074 \u1085 \u1103 \u1090 \u1100  \u1096 \u1072 \u1085 \u1089 \u1099  \u1074 \u1085 \u1077  \u1079 \u1072 \u1074 \u1080 \u1089 \u1080 \u1084 \u1086 \u1089 \u1090 \u1080  \u1086 \u1090  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1080 .</div>\
-\
-        <span class="tm-f">Matchium \'b7 @matchium_bot</span>\
-        <div class="tm-ti">19:34 \uc0\u10003 \u10003 </div>\
-      </div>\
-    </div>\
-  </div>\
-</div>\
-```\
-\
-  </div>\
-</section>\
-\
-<!-- MARQUEE -->\
-\
-<div class="mq-wrap">\
-  <div class="mq-track">\
-    <div class="mq-item"><span>\uc0\u9917 </span> \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56522 </span> \u1043 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
-    <div class="mq-item"><span>\uc0\u55356 \u57263 </span> \u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
-    <div class="mq-item"><span>\uc0\u9889 </span> 3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099 </div>\
-    <div class="mq-item"><span>\uc0\u55356 \u57101 </span> 1200+ \u1083 \u1080 \u1075 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56594 </span> \u1054 \u1087 \u1083 \u1072 \u1090 \u1072  \u1057 \u1041 \u1055 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56561 </span> \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  Telegram</div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56499 </span> 49 \u8381  \u1079 \u1072  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
-    <div class="mq-item"><span>\uc0\u9917 </span> \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56522 </span> \u1043 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
-    <div class="mq-item"><span>\uc0\u55356 \u57263 </span> \u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
-    <div class="mq-item"><span>\uc0\u9889 </span> 3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099 </div>\
-    <div class="mq-item"><span>\uc0\u55356 \u57101 </span> 1200+ \u1083 \u1080 \u1075 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56594 </span> \u1054 \u1087 \u1083 \u1072 \u1090 \u1072  \u1057 \u1041 \u1055 </div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56561 </span> \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  Telegram</div>\
-    <div class="mq-item"><span>\uc0\u55357 \u56499 </span> 49 \u8381  \u1079 \u1072  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
-  </div>\
-</div>\
-\
-<!-- WHAT YOU GET -->\
-\
-<section class="what-sec">\
-  <div class="what-in">\
-    <div class="what-head reveal">\
-      <div class="s-ey">\uc0\u1063 \u1090 \u1086  \u1074 \u1085 \u1091 \u1090 \u1088 \u1080 </div>\
-      <h2 class="s-title">\uc0\u1063 \u1058 \u1054  \u1042 \u1067  \u1055 \u1054 \u1051 \u1059 \u1063 \u1040 \u1045 \u1058 \u1045 </h2>\
-      <p class="s-sub">\uc0\u1053 \u1077  \'ab\u1084 \u1085 \u1077  \u1082 \u1072 \u1078 \u1077 \u1090 \u1089 \u1103  \u1087 \u1086 \u1073 \u1077 \u1076 \u1080 \u1090 \'bb \'97 \u1082 \u1086 \u1085 \u1082 \u1088 \u1077 \u1090 \u1085 \u1099 \u1077  \u1095 \u1080 \u1089 \u1083 \u1072 , \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076  \u1080  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1081  \u1074 \u1099 \u1074 \u1086 \u1076 .</p>\
-    </div>\
-    <div class="feat-grid reveal">\
-      <div class="feat-card">\
-        <div class="feat-num">01</div>\
-        <div class="feat-ic">\uc0\u55357 \u56522 </div>\
-        <div class="feat-t">\uc0\u1042 \u1080 \u1079 \u1091 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1092 \u1086 \u1088 \u1084 \u1072 </div>\
-        <div class="feat-b">\uc0\u1058 \u1086 \u1095 \u1082 \u1080  \u55357 \u57314 \u55357 \u57313 \u55357 \u56628  \u1079 \u1072  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1077  10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \'97 \u1089 \u1077 \u1088 \u1080 \u1102  \u1074 \u1080 \u1076 \u1085 \u1086  \u1086 \u1076 \u1085 \u1080 \u1084  \u1074 \u1079 \u1075 \u1083 \u1103 \u1076 \u1086 \u1084  \u1073 \u1077 \u1079  \u1095 \u1090 \u1077 \u1085 \u1080 \u1103  \u1090 \u1077 \u1082 \u1089 \u1090 \u1072 .</div>\
-      </div>\
-      <div class="feat-card">\
-        <div class="feat-num">02</div>\
-        <div class="feat-ic">\uc0\u55357 \u56520 </div>\
-        <div class="feat-t">\uc0\u1043 \u1083 \u1091 \u1073 \u1086 \u1082 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
-        <div class="feat-b">\uc0\u1043 \u1086 \u1083 \u1099 , \u1042 /\u1053 /\u1055  \u1076 \u1086 \u1084 \u1072  \u1080  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077 , xG \'97 \u1074 \u1089 \u1105  \u1088 \u1072 \u1079 \u1073 \u1080 \u1090 \u1086  \u1087 \u1086  \u1083 \u1086 \u1082 \u1072 \u1094 \u1080 \u1080 . \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  \u1092 \u1072 \u1082 \u1090 \u1099 .</div>\
-      </div>\
-      <div class="feat-card">\
-        <div class="feat-num">03</div>\
-        <div class="feat-ic">\uc0\u55356 \u57263 </div>\
-        <div class="feat-t">\uc0\u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
-        <div class="feat-b">\uc0\u1054 \u1076 \u1085 \u1072  \u1082 \u1086 \u1085 \u1082 \u1088 \u1077 \u1090 \u1085 \u1072 \u1103  \u1080 \u1076 \u1077 \u1103  \u1089  \u1095 \u1080 \u1089 \u1083 \u1086 \u1074 \u1099 \u1084  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1080 \u1077 \u1084 . \u1053 \u1077  \u1088 \u1072 \u1079 \u1084 \u1099 \u1090 \u1099 \u1077  \u1087 \u1088 \u1086 \u1075 \u1085 \u1086 \u1079 \u1099  \'97 \u1087 \u1086 \u1079 \u1080 \u1094 \u1080 \u1103  \u1089  \u1072 \u1088 \u1075 \u1091 \u1084 \u1077 \u1085 \u1090 \u1072 \u1084 \u1080 .</div>\
-      </div>\
-      <div class="feat-card">\
-        <div class="feat-num">04</div>\
-        <div class="feat-ic">\uc0\u9888 \u65039 </div>\
-        <div class="feat-t">\uc0\u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </div>\
-        <div class="feat-b">\uc0\u1063 \u1077 \u1089 \u1090 \u1085 \u1086  \u1087 \u1088 \u1077 \u1076 \u1091 \u1087 \u1088 \u1077 \u1078 \u1076 \u1072 \u1077 \u1084  \u1086  \u1090 \u1086 \u1084 , \u1095 \u1090 \u1086  \u1084 \u1086 \u1078 \u1077 \u1090  \u1086 \u1087 \u1088 \u1086 \u1074 \u1077 \u1088 \u1075 \u1085 \u1091 \u1090 \u1100  \u1074 \u1099 \u1074 \u1086 \u1076 . \u1055 \u1086 \u1090 \u1086 \u1084 \u1091  \u1095 \u1090 \u1086  \u1090 \u1072 \u1082  \u1095 \u1077 \u1089 \u1090 \u1085 \u1086 .</div>\
-      </div>\
-    </div>\
-  </div>\
-</section>\
-\
-<!-- HOW -->\
-\
-<section class="how-sec" id="how">\
-  <div class="how-in">\
-    <div class="reveal"><div class="s-ey">\uc0\u1055 \u1088 \u1086 \u1094 \u1077 \u1089 \u1089 </div><h2 class="s-title">\u1058 \u1056 \u1048  \u1064 \u1040 \u1043 \u1040 </h2><p class="s-sub">\u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1081  \u1088 \u1077 \u1075 \u1080 \u1089 \u1090 \u1088 \u1072 \u1094 \u1080 \u1080 , \u1082 \u1072 \u1073 \u1080 \u1085 \u1077 \u1090 \u1086 \u1074  \u1080  \u1086 \u1078 \u1080 \u1076 \u1072 \u1085 \u1080 \u1103 .</p></div>\
-    <div class="steps reveal">\
-      <div class="step">\
-        <div class="step-n">01</div><div class="step-i">\uc0\u9997 \u65039 </div>\
-        <div class="step-h">\uc0\u1055 \u1080 \u1096 \u1077 \u1096 \u1100  \u1084 \u1072 \u1090 \u1095 </div>\
-        <div class="step-p">\uc0\u1054 \u1090 \u1087 \u1088 \u1072 \u1074 \u1083 \u1103 \u1077 \u1096 \u1100  \u1073 \u1086 \u1090 \u1091  \u1085 \u1072 \u1079 \u1074 \u1072 \u1085 \u1080 \u1103  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076  \u1074  \u1083 \u1102 \u1073 \u1086 \u1084  \u1092 \u1086 \u1088 \u1084 \u1072 \u1090 \u1077  \'97 \'ab\u1047 \u1077 \u1085 \u1080 \u1090  \u1057 \u1087 \u1072 \u1088 \u1090 \u1072 \u1082 \'bb, \'ab\u1056 \u1077 \u1072 \u1083  \'97 \u1041 \u1072 \u1088 \u1089 \u1072 \'bb, \u1085 \u1072  \u1088 \u1091 \u1089 \u1089 \u1082 \u1086 \u1084  \u1080 \u1083 \u1080  \u1072 \u1085 \u1075 \u1083 \u1080 \u1081 \u1089 \u1082 \u1086 \u1084 .</div>\
-        <div class="step-a">\uc0\u8594 </div>\
-      </div>\
-      <div class="step">\
-        <div class="step-n">02</div><div class="step-i">\uc0\u55357 \u56499 </div>\
-        <div class="step-h">\uc0\u1054 \u1087 \u1083 \u1072 \u1095 \u1080 \u1074 \u1072 \u1077 \u1096 \u1100 </div>\
-        <div class="step-p">\uc0\u1041 \u1086 \u1090  \u1092 \u1086 \u1088 \u1084 \u1080 \u1088 \u1091 \u1077 \u1090  \u1089 \u1089 \u1099 \u1083 \u1082 \u1091  \u1085 \u1072  \u1086 \u1087 \u1083 \u1072 \u1090 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1070 \u1050 \u1072 \u1089 \u1089 \u1091 . \u1057 \u1041 \u1055  \u1080 \u1083 \u1080  \u1083 \u1102 \u1073 \u1072 \u1103  \u1082 \u1072 \u1088 \u1090 \u1072 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  \u1073 \u1086 \u1090 \u1091  \'97 \u1074 \u1089 \u1105  \u1095 \u1077 \u1088 \u1077 \u1079  \u1073 \u1072 \u1085 \u1082 .</div>\
-        <div class="step-a">\uc0\u8594 </div>\
-      </div>\
-      <div class="step">\
-        <div class="step-n">03</div><div class="step-i">\uc0\u55357 \u56552 </div>\
-        <div class="step-h">\uc0\u1055 \u1086 \u1083 \u1091 \u1095 \u1072 \u1077 \u1096 \u1100  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
-        <div class="step-p">\uc0\u1063 \u1077 \u1088 \u1077 \u1079  3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099  \u1074  \u1095 \u1072 \u1090  \u1087 \u1088 \u1080 \u1093 \u1086 \u1076 \u1080 \u1090  \u1087 \u1086 \u1083 \u1085 \u1072 \u1103  \u1072 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 : \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1076 \u1077 \u1090 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 , \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \u1080  \u1075 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 .</div>\
-      </div>\
-    </div>\
-  </div>\
-</section>\
-\
-<!-- PRICING -->\
-\
-<section class="pr-sec" id="pricing">\
-  <div class="pr-in">\
-    <div class="pr-top reveal">\
-      <div><div class="s-ey">\uc0\u1058 \u1072 \u1088 \u1080 \u1092 \u1099 </div><h2 class="s-title">\u1055 \u1056 \u1054 \u1057 \u1058 \u1054 <br>\u1048  \u1063 \u1045 \u1057 \u1058 \u1053 \u1054 </h2></div>\
-      <div class="pr-note">\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1080 \u1079  \u1087 \u1072 \u1082 \u1077 \u1090 \u1072  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 . \u1055 \u1083 \u1072 \u1090 \u1080 \u1096 \u1100  \u1086 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079  \'97 \u1080 \u1089 \u1087 \u1086 \u1083 \u1100 \u1079 \u1091 \u1077 \u1096 \u1100  \u1082 \u1086 \u1075 \u1076 \u1072  \u1085 \u1091 \u1078 \u1085 \u1086 .</div>\
-    </div>\
-    <div class="pr-cards reveal">\
-      <div class="pc">\
-        <div class="pc-nm">\uc0\u1054 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
-        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>49</div>\
-        <div class="pc-pe">\uc0\u1079 \u1072  \u1084 \u1072 \u1090 \u1095 </div>\
-        <div class="pc-ln"></div>\
-        <ul class="pc-li">\
-          <li>\uc0\u1042 \u1080 \u1079 \u1091 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1092 \u1086 \u1088 \u1084 \u1072  (10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 )</li>\
-          <li>\uc0\u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1076 \u1086 \u1084 \u1072  \u1080  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077 </li>\
-          <li>\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1095 \u1077 \u1089 \u1082 \u1080 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </li>\
-          <li>\uc0\u1042 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \u1089  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1080 \u1077 \u1084 </li>\
-          <li>\uc0\u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </li>\
-        </ul>\
-        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">\uc0\u1055 \u1086 \u1087 \u1088 \u1086 \u1073 \u1086 \u1074 \u1072 \u1090 \u1100  \u8594 </a>\
-      </div>\
-      <div class="pc feat">\
-        <div class="pc-hot">\uc0\u1055 \u1086 \u1087 \u1091 \u1083 \u1103 \u1088 \u1085 \u1099 \u1081 </div>\
-        <div class="pc-nm">\uc0\u1055 \u1072 \u1082 \u1077 \u1090  5 \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074 </div>\
-        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>179</div>\
-        <div class="pc-pe">\uc0\u1074 \u1084 \u1077 \u1089 \u1090 \u1086  245 \u8381 </div>\
-        <div class="pc-sv">\uc0\u1069 \u1082 \u1086 \u1085 \u1086 \u1084 \u1080 \u1103  27%</div>\
-        <div class="pc-ln"></div>\
-        <ul class="pc-li">\
-          <li>5 \uc0\u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074  \u1085 \u1072  \u1073 \u1072 \u1083 \u1072 \u1085 \u1089 \u1077 </li>\
-          <li>\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 </li>\
-          <li>\uc0\u1040 \u1082 \u1090 \u1080 \u1074 \u1080 \u1088 \u1091 \u1077 \u1090 \u1089 \u1103  \u1084 \u1075 \u1085 \u1086 \u1074 \u1077 \u1085 \u1085 \u1086 </li>\
-          <li>\uc0\u1042 \u1089 \u1077  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1080  \u1073 \u1072 \u1079 \u1086 \u1074 \u1086 \u1075 \u1086 </li>\
-          <li>\uc0\u1059 \u1076 \u1086 \u1073 \u1085 \u1086  \u1076 \u1083 \u1103  \u1089 \u1077 \u1088 \u1080 \u1080  \u1090 \u1091 \u1088 \u1086 \u1074 </li>\
-        </ul>\
-        <a href="https://t.me/matchium_bot" class="pc-btn pc-s" target="_blank">\uc0\u1050 \u1091 \u1087 \u1080 \u1090 \u1100  \u1087 \u1072 \u1082 \u1077 \u1090  \u8594 </a>\
-      </div>\
-      <div class="pc">\
-        <div class="pc-nm">\uc0\u1055 \u1072 \u1082 \u1077 \u1090  10 \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074 </div>\
-        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>299</div>\
-        <div class="pc-pe">\uc0\u1074 \u1084 \u1077 \u1089 \u1090 \u1086  490 \u8381 </div>\
-        <div class="pc-sv">\uc0\u1069 \u1082 \u1086 \u1085 \u1086 \u1084 \u1080 \u1103  39%</div>\
-        <div class="pc-ln"></div>\
-        <ul class="pc-li">\
-          <li>10 \uc0\u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074  \u1085 \u1072  \u1073 \u1072 \u1083 \u1072 \u1085 \u1089 \u1077 </li>\
-          <li>\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 </li>\
-          <li>\uc0\u1040 \u1082 \u1090 \u1080 \u1074 \u1080 \u1088 \u1091 \u1077 \u1090 \u1089 \u1103  \u1084 \u1075 \u1085 \u1086 \u1074 \u1077 \u1085 \u1085 \u1086 </li>\
-          <li>\uc0\u1042 \u1089 \u1077  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1080  \u1073 \u1072 \u1079 \u1086 \u1074 \u1086 \u1075 \u1086 </li>\
-          <li>\uc0\u1051 \u1091 \u1095 \u1096 \u1080 \u1081  \u1074 \u1099 \u1073 \u1086 \u1088  \u1085 \u1072  \u1089 \u1077 \u1079 \u1086 \u1085 </li>\
-        </ul>\
-        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">\uc0\u1050 \u1091 \u1087 \u1080 \u1090 \u1100  \u1087 \u1072 \u1082 \u1077 \u1090  \u8594 </a>\
-      </div>\
-    </div>\
-  </div>\
-</section>\
-\
-<!-- TRUST -->\
-\
-<section class="tr-sec">\
-  <div class="tr-grid reveal">\
-    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56594 </div><div class="tr-t">\u1041 \u1077 \u1079 \u1086 \u1087 \u1072 \u1089 \u1085 \u1072 \u1103  \u1086 \u1087 \u1083 \u1072 \u1090 \u1072 </div><div class="tr-b">\u1057 \u1041 \u1055  \u1080  \u1082 \u1072 \u1088 \u1090 \u1099  \u1095 \u1077 \u1088 \u1077 \u1079  \u1070 \u1050 \u1072 \u1089 \u1089 \u1091 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  \u1073 \u1086 \u1090 \u1091  \'97 \u1074 \u1089 \u1105  \u1095 \u1077 \u1088 \u1077 \u1079  \u1073 \u1072 \u1085 \u1082 .</div></div>\
-    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56545 </div><div class="tr-t">\u1054 \u1092 \u1080 \u1094 \u1080 \u1072 \u1083 \u1100 \u1085 \u1099 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1077 </div><div class="tr-b">\u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1080 \u1079  \u1087 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1086 \u1081  \u1073 \u1072 \u1079 \u1099  \'97 1200+ \u1083 \u1080 \u1075  \u1084 \u1080 \u1088 \u1072 , \u1086 \u1073 \u1085 \u1086 \u1074 \u1083 \u1103 \u1077 \u1090 \u1089 \u1103  \u1087 \u1086 \u1089 \u1083 \u1077  \u1082 \u1072 \u1078 \u1076 \u1086 \u1075 \u1086  \u1084 \u1072 \u1090 \u1095 \u1072 .</div></div>\
-    <div class="tr-item"><div class="tr-ic">\uc0\u9889 </div><div class="tr-t">3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099  \'97 \u1075 \u1072 \u1088 \u1072 \u1085 \u1090 \u1080 \u1103 </div><div class="tr-b">\u1055 \u1086 \u1089 \u1083 \u1077  \u1086 \u1087 \u1083 \u1072 \u1090 \u1099  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1087 \u1088 \u1080 \u1093 \u1086 \u1076 \u1080 \u1090  \u1072 \u1074 \u1090 \u1086 \u1084 \u1072 \u1090 \u1080 \u1095 \u1077 \u1089 \u1082 \u1080 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1075 \u1086  \u1088 \u1091 \u1095 \u1085 \u1086 \u1075 \u1086  \u1090 \u1088 \u1091 \u1076 \u1072 .</div></div>\
-    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56492 </div><div class="tr-t">\u1055 \u1086 \u1076 \u1076 \u1077 \u1088 \u1078 \u1082 \u1072  24/7</div><div class="tr-b">\u1063 \u1090 \u1086 -\u1090 \u1086  \u1087 \u1086 \u1096 \u1083 \u1086  \u1085 \u1077  \u1090 \u1072 \u1082  \'97 \u1074 \u1077 \u1088 \u1085 \u1105 \u1084  \u1076 \u1077 \u1085 \u1100 \u1075 \u1080  \u1080 \u1083 \u1080  \u1089 \u1076 \u1077 \u1083 \u1072 \u1077 \u1084  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1087 \u1086 \u1074 \u1090 \u1086 \u1088 \u1085 \u1086 .</div></div>\
-  </div>\
-</section>\
-\
-<!-- CTA -->\
-\
-<section class="cta-sec">\
-  <div class="cta-in reveal">\
-    <h2 class="cta-h"><span class="c1">\uc0\u1040 \u1053 \u1040 \u1051 \u1048 \u1058 \u1048 \u1050 \u1040 </span><span class="c2">\u1055 \u1045 \u1056 \u1042 \u1067 \u1049  \u1056 \u1040 \u1047 \u1041 \u1054 \u1056 </span><span class="c3">\u1047 \u1040  49 \u1056 \u1059 \u1041 \u1051 \u1045 \u1049 </span></h2>\
-    <p class="cta-p">\uc0\u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1081  \u1088 \u1077 \u1075 \u1080 \u1089 \u1090 \u1088 \u1072 \u1094 \u1080 \u1080 . \u1054 \u1090 \u1082 \u1088 \u1099 \u1074 \u1072 \u1077 \u1096 \u1100  \u1073 \u1086 \u1090  \'97 \u1080  \u1089 \u1088 \u1072 \u1079 \u1091  \u1082  \u1076 \u1077 \u1083 \u1091 .</p>\
-    <div class="cta-pill">MATCHIUM \'b7 \uc0\u1040 \u1053 \u1040 \u1051 \u1048 \u1058 \u1048 \u1050 \u1040  \u1052 \u1040 \u1058 \u1063 \u1045 \u1049  \'b7 @matchium_bot</div>\
-    <br><br>\
-    <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank" style="display:inline-flex;margin-top:8px">\
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>\
-      \uc0\u1054 \u1090 \u1082 \u1088 \u1099 \u1090 \u1100  \u1074  Telegram\
-    </a>\
-  </div>\
-</section>\
-\
-<footer>\
-  <div class="f-logo">MATCHIUM</div>\
-  <div class="f-links"><a href="/oferta.html">\uc0\u1055 \u1091 \u1073 \u1083 \u1080 \u1095 \u1085 \u1072 \u1103  \u1086 \u1092 \u1077 \u1088 \u1090 \u1072 </a><a href="https://t.me/matchium_bot" target="_blank">@matchium_bot</a></div>\
-  <div class="f-copy">\'a9 2025 Matchium</div>\
-</footer>\
-\
-</div>\
-\
-<script>\
-window.addEventListener('load',()=>\{\
-  const intro=document.getElementById('intro');\
-  const site=document.getElementById('site');\
-  setTimeout(()=>\{\
-    intro.classList.add('done');\
-    site.classList.add('visible');\
-    setTimeout(()=>intro.style.display='none',800);\
-  \},2000);\
-\});\
-\
-const obs=new IntersectionObserver((entries)=>\{\
-  entries.forEach(e=>\{if(e.isIntersecting)\{e.target.classList.add('on');obs.unobserve(e.target)\}\});\
-\},\{threshold:.08,rootMargin:'0px 0px -40px 0px'\});\
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));\
-\
-document.querySelectorAll('.pr-cards .pc,.steps .step,.tr-grid .tr-item,.feat-grid .feat-card').forEach((el,i)=>\{\
-  el.style.transitionDelay=(i*.09)+'s';\
-\});\
-</script>\
-\
-</body>\
-</html>}
+/* INTRO */
+#intro{position:fixed;inset:0;z-index:9000;background:var(--black);display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}
+#intro.done{opacity:0;transition:opacity .7s ease;pointer-events:none}
+.ball-trail{position:absolute;font-size:72px;animation:ballFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;filter:drop-shadow(0 0 40px rgba(200,240,53,0.5));will-change:transform,opacity;user-select:none;line-height:1}
+@keyframes ballFly{0%{transform:translate(-65vw,25vh) rotate(0deg) scale(.5);opacity:0}15%{opacity:1}55%{transform:translate(2vw,-2vh) rotate(380deg) scale(1.05);opacity:1}75%{transform:translate(2vw,-2vh) rotate(410deg) scale(1);opacity:1}100%{transform:translate(72vw,-28vh) rotate(760deg) scale(.3);opacity:0}}
+.streak{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.28),transparent);border-radius:2px;animation:streakFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;pointer-events:none;opacity:0}
+.s1{width:220px;top:50%;left:28%;animation-delay:.12s}
+.s2{width:150px;top:calc(50% + 18px);left:26%;animation-delay:.18s}
+.s3{width:100px;top:calc(50% - 18px);left:31%;animation-delay:.24s}
+@keyframes streakFly{0%{opacity:0;transform:scaleX(0) translateX(-50px)}25%{opacity:.7;transform:scaleX(1) translateX(0)}65%{opacity:.7;transform:scaleX(1) translateX(90px)}100%{opacity:0;transform:scaleX(.1) translateX(220px)}}
+.intro-logo{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:10px;color:var(--accent);opacity:0;transform:scale(.85);animation:logoIn .5s ease .95s forwards;text-shadow:0 0 60px rgba(200,240,53,0.4)}
+@keyframes logoIn{to{opacity:1;transform:scale(1)}}
+.intro-sub{position:absolute;top:calc(50% + 50px);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0;animation:logoIn .4s ease 1.15s forwards}
+#site{opacity:0;transition:opacity .9s ease}
+#site.visible{opacity:1}
+
+/* BLOBS */
+.blob{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+.blob1{width:600px;height:600px;background:rgba(200,240,53,0.07);top:-150px;right:-150px;animation:drift 14s ease-in-out infinite alternate}
+.blob2{width:450px;height:450px;background:rgba(60,80,200,0.05);bottom:-50px;left:-100px;animation:drift 18s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,20px) scale(1.1)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,16,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:var(--accent);text-decoration:none}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:400}
+.nav-link:hover{color:var(--text)}
+.nav-cta{font-family:'Geologica',sans-serif;font-size:13px;font-weight:500;color:var(--black);background:var(--accent);border:none;padding:9px 20px;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s}
+.nav-cta:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,240,53,0.25)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(200,240,53,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,240,53,0.025) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 85% 80% at 25% 40%,black 10%,transparent 75%);pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 460px;gap:72px;align-items:center}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;opacity:0;animation:fadeUp .8s .1s ease forwards}
+.ey-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,240,53,.5)}50%{box-shadow:0 0 0 7px rgba(200,240,53,0)}}
+.ey-text{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(76px,10.5vw,152px);line-height:.88;letter-spacing:2px;opacity:0;animation:fadeUp .8s .2s ease forwards}
+h1 .l1{display:block;color:rgba(232,232,240,0.15)}
+h1 .l2{display:block;color:var(--text)}
+h1 .l3{display:block;color:var(--accent)}
+
+.hero-desc{font-size:17px;font-weight:300;color:#8888a0;max-width:480px;margin:28px 0 44px;line-height:1.75;opacity:0;animation:fadeUp .8s .3s ease forwards}
+.hero-desc strong{color:var(--text);font-weight:500}
+
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .4s ease forwards}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--black);font-family:'Geologica',sans-serif;font-size:15px;font-weight:600;padding:15px 30px;border-radius:4px;text-decoration:none;position:relative;overflow:hidden;transition:all .25s}
+.btn-primary::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s ease}
+.btn-primary:hover::after{transform:translateX(0)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(200,240,53,.3)}
+.btn-ghost{font-size:14px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;font-weight:400}
+.btn-ghost:hover{color:var(--text)}
+
+.hero-stats{display:flex;gap:0;margin-top:64px;padding-top:40px;border-top:1px solid var(--border);opacity:0;animation:fadeUp .8s .5s ease forwards}
+.stat-item{flex:1;padding-right:28px;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none;padding-left:28px;padding-right:0}
+.stat-item:not(:first-child):not(:last-child){padding:0 28px}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--accent);letter-spacing:1px;line-height:1}
+.stat-label{font-size:12px;color:var(--muted);margin-top:5px;letter-spacing:.3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO TG CARD — full rich example */
+.hero-card{position:relative;opacity:0;animation:fadeUp .9s .6s ease forwards}
+.hcg1{position:absolute;width:200px;height:200px;background:rgba(200,240,53,0.12);border-radius:50%;filter:blur(60px);top:-40px;right:-40px;pointer-events:none}
+.hcg2{position:absolute;width:150px;height:150px;background:rgba(60,80,255,0.08);border-radius:50%;filter:blur(50px);bottom:-30px;left:-20px;pointer-events:none}
+
+.tg-phone{background:#17212b;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(200,240,53,0.04),inset 0 1px 0 rgba(255,255,255,0.05);position:relative}
+.tg-phone::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)}
+.tg-bar{background:#0d1923;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.tg-ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1d5f8a,#0d3a56);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--accent);letter-spacing:1px;flex-shrink:0;border:1px solid rgba(200,240,53,0.2)}
+.tg-nm{font-size:13px;font-weight:600;color:#e0eaf4}
+.tg-on{font-size:11px;color:var(--accent)}
+.tg-body{padding:14px;background:#17212b}
+.tg-msg{background:#1c2f3f;border-radius:4px 14px 14px 14px;padding:14px 16px 11px;font-size:13px;line-height:1.65;color:#b0c8d8;border:1px solid rgba(255,255,255,0.04)}
+
+.tm-t{font-size:15px;font-weight:700;color:#e8f4ff;margin-bottom:3px}
+.tm-b{font-family:monospace;font-size:11px;color:#4a7a9b;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:10px}
+.tm-d{color:#1a3348;font-size:11px;margin:9px 0;letter-spacing:.5px}
+.tm-sh{font-size:13px;font-weight:600;color:#c0d8e8;margin-bottom:6px}
+.fl{font-size:13px;line-height:2.1}
+.fl b{color:#90b4c8;font-weight:500}
+.sb{font-size:12.5px;color:#7a9eb0;line-height:2}
+.sb b{color:#aaccdc;font-weight:500}
+.ap{font-size:12.5px;color:#7a9eb0;line-height:1.7;margin-bottom:6px}
+.vb{background:rgba(60,180,100,0.09);border-left:2.5px solid #3cb464;padding:10px 13px;border-radius:0 7px 7px 0;font-size:12.5px;color:#7dd4a0;line-height:1.6;margin:5px 0}
+.vb b{color:#b0f0c8}
+.rb{font-size:12px;color:#d4904a;background:rgba(212,144,74,0.07);border-left:2.5px solid #d4904a;padding:7px 12px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5}
+.tm-f{font-family:monospace;font-size:10px;color:#243444;background:rgba(0,0,0,.3);padding:2px 7px;border-radius:3px;display:inline-block;margin-top:10px}
+.tm-ti{font-size:10px;color:#243444;text-align:right;margin-top:3px}
+
+/* MARQUEE */
+.mq-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:13px 0;position:relative;z-index:2}
+.mq-track{display:flex;width:max-content;animation:mq 30s linear infinite}
+.mq-item{display:flex;align-items:center;gap:10px;padding:0 36px;font-size:11.5px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.mq-item span{color:var(--accent);font-size:13px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION COMMONS */
+section{position:relative;z-index:2}
+.s-ey{font-size:10.5px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.s-ey::before{content:'';width:20px;height:1px;background:var(--accent)}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,78px);line-height:.9;letter-spacing:1.5px;color:var(--text);margin-bottom:14px}
+.s-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:500px;line-height:1.75}
+
+/* WHAT YOU GET — features only, no panel */
+.what-sec{padding:120px 48px}
+.what-in{max-width:1160px;margin:0 auto}
+.what-head{margin-bottom:56px}
+.what-head .s-sub{margin-top:16px}
+
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.feat-card{background:var(--surface2);padding:32px 28px;border-radius:0;transition:background .2s;position:relative}
+.feat-card:first-child{border-radius:14px 0 0 14px}
+.feat-card:last-child{border-radius:0 14px 14px 0}
+.feat-card:hover{background:#13131f}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,0.08),transparent)}
+.feat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:rgba(200,240,53,0.07);line-height:1;margin-bottom:16px;transition:color .25s;letter-spacing:1px}
+.feat-card:hover .feat-num{color:rgba(200,240,53,0.12)}
+.feat-ic{font-size:24px;margin-bottom:12px}
+.feat-t{font-size:15px;font-weight:500;color:var(--text);margin-bottom:8px}
+.feat-b{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* HOW */
+.how-sec{padding:120px 48px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.how-in{max-width:1160px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:60px}
+.step{background:var(--surface2);padding:40px 34px;position:relative;transition:background .2s}
+.step:first-child{border-radius:14px 0 0 14px}
+.step:last-child{border-radius:0 14px 14px 0}
+.step:hover{background:#13131f}
+.step-n{font-family:'Bebas Neue',sans-serif;font-size:88px;line-height:.9;color:rgba(200,240,53,0.06);letter-spacing:2px;margin-bottom:20px;transition:color .25s}
+.step:hover .step-n{color:rgba(200,240,53,0.10)}
+.step-i{font-size:26px;margin-bottom:14px}
+.step-h{font-size:17px;font-weight:500;color:var(--text);margin-bottom:9px}
+.step-p{font-size:13px;color:var(--muted);line-height:1.7}
+.step-a{position:absolute;right:-15px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:var(--black);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:13px;z-index:3;box-shadow:0 0 0 4px var(--black)}
+
+/* PRICING */
+.pr-sec{padding:120px 48px}
+.pr-in{max-width:1160px;margin:0 auto}
+.pr-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px}
+.pr-note{font-size:14px;color:var(--muted);max-width:280px;text-align:right;line-height:1.65}
+.pr-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pc{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:30px 26px;position:relative;transition:all .25s;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)}
+.pc:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.pc.feat{background:linear-gradient(160deg,rgba(200,240,53,0.07) 0%,var(--surface2) 60%);border-color:rgba(200,240,53,0.22)}
+.pc.feat::before{background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)}
+.pc.feat:hover{border-color:rgba(200,240,53,0.38);box-shadow:0 20px 60px rgba(200,240,53,0.07)}
+.pc-hot{position:absolute;top:18px;right:18px;font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:var(--accent);color:var(--black);padding:3px 10px;border-radius:20px}
+.pc-nm{font-size:10.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.feat .pc-nm{color:var(--accent)}
+.pc-am{font-family:'Bebas Neue',sans-serif;font-size:68px;line-height:1;color:var(--text);letter-spacing:1px}
+.pc-cu{font-size:30px;vertical-align:super;color:#8888a0;margin-right:2px}
+.pc-pe{font-size:13px;color:var(--muted);margin-top:5px}
+.pc-sv{display:inline-block;font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-dim2);border:1px solid rgba(200,240,53,0.18);padding:3px 10px;border-radius:4px;margin:8px 0 0}
+.pc-ln{height:1px;background:var(--border);margin:22px 0}
+.pc-li{list-style:none}
+.pc-li li{display:flex;gap:9px;font-size:13px;color:#8888a0;padding:5px 0;line-height:1.5;align-items:flex-start}
+.pc-li li::before{content:'✓';color:var(--accent);font-size:11px;flex-shrink:0;margin-top:2px;font-weight:700}
+.pc-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:26px;padding:13px 20px;border-radius:6px;font-family:'Geologica',sans-serif;font-size:14px;font-weight:500;text-decoration:none;transition:all .22s;border:none;cursor:pointer}
+.pc-o{background:transparent;border:1px solid var(--border2);color:#8888a0}
+.pc-o:hover{border-color:rgba(200,240,53,0.3);color:var(--accent);background:var(--accent-dim2)}
+.pc-s{background:var(--accent);color:var(--black)}
+.pc-s:hover{background:var(--accent2);box-shadow:0 8px 28px rgba(200,240,53,0.28);transform:translateY(-1px)}
+
+/* TRUST */
+.tr-sec{padding:64px 48px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tr-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:14px;overflow:hidden}
+.tr-item{background:var(--surface2);padding:32px 28px;text-align:center;transition:background .2s}
+.tr-item:hover{background:#131320}
+.tr-ic{font-size:26px;margin-bottom:12px}
+.tr-t{font-size:14px;font-weight:500;color:var(--text);margin-bottom:7px}
+.tr-b{font-size:12.5px;color:var(--muted);line-height:1.65}
+
+/* CTA */
+.cta-sec{padding:160px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(200,240,53,0.05) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-in{position:relative;z-index:2}
+.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,9vw,120px);line-height:.88;letter-spacing:2px;margin-bottom:28px}
+.cta-h .c1{display:block;color:rgba(232,232,240,0.12)}
+.cta-h .c2{display:block;color:var(--text)}
+.cta-h .c3{display:block;color:var(--accent)}
+.cta-p{font-size:16px;color:var(--muted);margin-bottom:44px;line-height:1.7}
+.cta-pill{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(200,240,53,0.18);background:var(--accent-dim2);padding:9px 22px;border-radius:40px;margin-bottom:36px;font-size:12px;color:var(--accent);letter-spacing:1px;font-weight:500}
+.cta-pill::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;z-index:2}
+.f-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:var(--accent)}
+.f-links{display:flex;gap:24px}
+.f-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.f-links a:hover{color:var(--text)}
+.f-copy{font-size:12px;color:#333346}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:56px}
+  .hero-card{max-width:480px}
+  .feat-grid{grid-template-columns:1fr 1fr;gap:3px}
+  .feat-card:nth-child(2){border-radius:0 14px 0 0}
+  .feat-card:nth-child(3){border-radius:0 0 0 14px}
+  .feat-card:first-child{border-radius:14px 0 0 0}
+  .feat-card:last-child{border-radius:0 0 14px 0}
+  .steps{grid-template-columns:1fr;gap:3px}
+  .step:first-child{border-radius:14px 14px 0 0}
+  .step:last-child{border-radius:0 0 14px 14px}
+  .step-a{display:none}
+  .pr-cards{grid-template-columns:1fr}
+  .tr-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links .nav-link{display:none}
+  .hero,.what-sec,.how-sec,.pr-sec,.tr-sec,.cta-sec{padding-left:20px;padding-right:20px}
+  footer{padding:28px 20px;flex-direction:column;text-align:center}
+  .hero-stats{flex-wrap:wrap;gap:20px}
+  .stat-item{border-right:none!important;padding:0!important}
+  .pr-top{flex-direction:column;align-items:flex-start}
+  .pr-note{text-align:left}
+  .tr-grid{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .feat-card{border-radius:0!important}
+  .feat-card:first-child{border-radius:14px 14px 0 0!important}
+  .feat-card:last-child{border-radius:0 0 14px 14px!important}
+  .ball-trail{font-size:52px}
+  .intro-logo{font-size:44px;letter-spacing:7px}
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="streak s1"></div>
+  <div class="streak s2"></div>
+  <div class="streak s3"></div>
+  <div class="ball-trail">⚽</div>
+  <div class="intro-logo">MATCHIUM</div>
+  <div class="intro-sub">Аналитика матчей</div>
+</div>
+
+<!-- SITE -->
+<div id="site">
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <a class="nav-logo" href="#">MATCHIUM</a>
+  <div class="nav-links">
+    <a class="nav-link" href="#how">Как работает</a>
+    <a class="nav-link" href="#pricing">Цены</a>
+    <a class="nav-cta" href="https://t.me/matchium_bot" target="_blank">Открыть бота →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow"><div class="ey-dot"></div><span class="ey-text">Аналитика матчей · Telegram</span></div>
+      <h1><span class="l1">ДАННЫЕ</span><span class="l2">НЕ</span><span class="l3">МНЕНИЯ</span></h1>
+      <p class="hero-desc">Профессиональный разбор любого матча — форма команд, голевая статистика и чёткий вердикт. Прямо в Telegram, за <strong>49 ₽</strong>.</p>
+      <div class="hero-actions">
+        <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
+          Попробовать за 49 ₽
+        </a>
+        <a href="#how" class="btn-ghost">Как это работает →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">49₽</div><div class="stat-label">один разбор</div></div>
+        <div class="stat-item"><div class="stat-num">3 МИН</div><div class="stat-label">до получения разбора</div></div>
+        <div class="stat-item"><div class="stat-num">1200+</div><div class="stat-label">лиг в базе</div></div>
+        <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">без выходных</div></div>
+      </div>
+    </div>
+
+    <!-- TG CARD — rich example -->
+    <div class="hero-card">
+      <div class="hcg1"></div><div class="hcg2"></div>
+      <div class="tg-phone">
+        <div class="tg-bar">
+          <div class="tg-ava">M</div>
+          <div><div class="tg-nm">Matchium</div><div class="tg-on">● онлайн</div></div>
+        </div>
+        <div class="tg-body">
+          <div class="tg-msg">
+            <div class="tm-t">⚽ Зенит — ЦСКА</div>
+            <span class="tm-b">Matchium · аналитика</span>
+
+            <div class="tm-d">━━━━━━━━━━━━━━━</div>
+            <div class="tm-sh">📊 Форма команд</div>
+            <div class="fl">
+              <b>Зенит:</b><br>🟢 🟢 🟡 🟢 🟢 🔴 🟢 🟢 🟢 🟡<br>
+              <b>ЦСКА:</b><br>🟢 🔴 🟢 🟡 🟢 🟢 🔴 🟢 🟡 🟢
+            </div>
+
+            <div class="tm-d">━━━━━━━━━━━━━━━</div>
+            <div class="tm-sh">📈 Статистика · 10 матчей</div>
+            <div class="sb">
+              <b>Зенит:</b> Забито: 22 · Пропущено: 9 · В/Н/П: 7/2/1<br>
+              Дома В/Н/П: 4/1/0 · Забито: 13 · Пропущено: 4<br>
+              <b>ЦСКА:</b> Забито: 17 · Пропущено: 12 · В/Н/П: 6/2/2<br>
+              На выезде В/Н/П: 2/1/2 · Забито: 6 · Пропущено: 8
+            </div>
+
+            <div class="tm-d">━━━━━━━━━━━━━━━</div>
+            <div class="tm-sh">🔍 Аналитика</div>
+            <div class="ap">Зенит дома — другая команда. 4 победы из 5 домашних матчей, 13 забитых при лишь 4 пропущенных — лучший показатель среди топ-6 РПЛ. Средняя результативность 2.6 гола за домашний матч.</div>
+            <div class="ap">ЦСКА на выезде резко сдаёт: только 2 победы из 5, пропускает в среднем 1.6 за игру. В последних 3 выездных матчах — 0 чистых листов. Атака в гостях забивает 1.2 в среднем.</div>
+            <div class="ap">Разница в xG (ожидаемых голах) дополнительно подтверждает преимущество хозяев: Зенит дома создаёт 2.1 xG, ЦСКА на выезде — 1.0 xG против.</div>
+
+            <div class="tm-d">━━━━━━━━━━━━━━━</div>
+            <div class="tm-sh">🎯 Вердикт</div>
+            <div class="vb"><b>П1 + ТБ 2.5</b> — Зенит выигрывает дома в 80% случаев последних 10 матчей. ЦСКА выездная статистика одна из худших в лиге. Оба клуба результативны — матч должен быть голевым.</div>
+
+            <div class="tm-d">━━━━━━━━━━━━━━━</div>
+            <div class="tm-sh">⚠️ Главный риск</div>
+            <div class="rb">Дерби всегда непредсказуемо — мотивация ЦСКА в принципиальном матче может выровнять шансы вне зависимости от статистики.</div>
+
+            <span class="tm-f">Matchium · @matchium_bot</span>
+            <div class="tm-ti">19:34 ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <div class="mq-item"><span>⚽</span> Форма команд</div>
+    <div class="mq-item"><span>📊</span> Голевая статистика</div>
+    <div class="mq-item"><span>🎯</span> Чёткий вердикт</div>
+    <div class="mq-item"><span>⚡</span> 3 минуты</div>
+    <div class="mq-item"><span>🌍</span> 1200+ лиг</div>
+    <div class="mq-item"><span>🔒</span> Оплата СБП</div>
+    <div class="mq-item"><span>📱</span> Только Telegram</div>
+    <div class="mq-item"><span>💳</span> 49 ₽ за разбор</div>
+    <div class="mq-item"><span>⚽</span> Форма команд</div>
+    <div class="mq-item"><span>📊</span> Голевая статистика</div>
+    <div class="mq-item"><span>🎯</span> Чёткий вердикт</div>
+    <div class="mq-item"><span>⚡</span> 3 минуты</div>
+    <div class="mq-item"><span>🌍</span> 1200+ лиг</div>
+    <div class="mq-item"><span>🔒</span> Оплата СБП</div>
+    <div class="mq-item"><span>📱</span> Только Telegram</div>
+    <div class="mq-item"><span>💳</span> 49 ₽ за разбор</div>
+  </div>
+</div>
+
+<!-- WHAT YOU GET -->
+<section class="what-sec">
+  <div class="what-in">
+    <div class="what-head reveal">
+      <div class="s-ey">Что внутри</div>
+      <h2 class="s-title">ЧТО ВЫ ПОЛУЧАЕТЕ</h2>
+      <p class="s-sub">Не «мне кажется победит» — конкретные числа, форма команд и обоснованный вывод.</p>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat-card">
+        <div class="feat-num">01</div>
+        <div class="feat-ic">📊</div>
+        <div class="feat-t">Визуальная форма</div>
+        <div class="feat-b">Точки 🟢🟡🔴 за последние 10 матчей — серию видно одним взглядом без чтения текста.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">02</div>
+        <div class="feat-ic">📈</div>
+        <div class="feat-t">Глубокая статистика</div>
+        <div class="feat-b">Голы, В/Н/П дома и на выезде, xG — всё разбито по локации. Только факты.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">03</div>
+        <div class="feat-ic">🎯</div>
+        <div class="feat-t">Чёткий вердикт</div>
+        <div class="feat-b">Одна конкретная идея с числовым обоснованием. Не размытые прогнозы — позиция с аргументами.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">04</div>
+        <div class="feat-ic">⚠️</div>
+        <div class="feat-t">Главный риск</div>
+        <div class="feat-b">Честно предупреждаем о том, что может опровергнуть вывод. Потому что так честно.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how-sec" id="how">
+  <div class="how-in">
+    <div class="reveal"><div class="s-ey">Процесс</div><h2 class="s-title">ТРИ ШАГА</h2><p class="s-sub">Никакой регистрации, кабинетов и ожидания.</p></div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-n">01</div><div class="step-i">✍️</div>
+        <div class="step-h">Пишешь матч</div>
+        <div class="step-p">Отправляешь боту названия команд в любом формате — «Зенит Спартак», «Реал — Барса», на русском или английском.</div>
+        <div class="step-a">→</div>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div><div class="step-i">💳</div>
+        <div class="step-h">Оплачиваешь</div>
+        <div class="step-p">Бот формирует ссылку на оплату через ЮКассу. СБП или любая карта. Никаких данных боту — всё через банк.</div>
+        <div class="step-a">→</div>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div><div class="step-i">📨</div>
+        <div class="step-h">Получаешь разбор</div>
+        <div class="step-p">Через 3 минуты в чат приходит полная аналитика: форма команд, детальная статистика, вердикт и главный риск.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pr-sec" id="pricing">
+  <div class="pr-in">
+    <div class="pr-top reveal">
+      <div><div class="s-ey">Тарифы</div><h2 class="s-title">ПРОСТО<br>И ЧЕСТНО</h2></div>
+      <div class="pr-note">Баланс из пакета не сгорает. Платишь один раз — используешь когда нужно.</div>
+    </div>
+    <div class="pr-cards reveal">
+      <div class="pc">
+        <div class="pc-nm">Один разбор</div>
+        <div class="pc-am"><span class="pc-cu">₽</span>49</div>
+        <div class="pc-pe">за матч</div>
+        <div class="pc-ln"></div>
+        <ul class="pc-li">
+          <li>Визуальная форма (10 матчей)</li>
+          <li>Статистика дома и на выезде</li>
+          <li>Аналитический разбор</li>
+          <li>Вердикт с обоснованием</li>
+          <li>Главный риск</li>
+        </ul>
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">Попробовать →</a>
+      </div>
+      <div class="pc feat">
+        <div class="pc-hot">Популярный</div>
+        <div class="pc-nm">Пакет 5 разборов</div>
+        <div class="pc-am"><span class="pc-cu">₽</span>179</div>
+        <div class="pc-pe">вместо 245 ₽</div>
+        <div class="pc-sv">Экономия 27%</div>
+        <div class="pc-ln"></div>
+        <ul class="pc-li">
+          <li>5 разборов на балансе</li>
+          <li>Баланс не сгорает</li>
+          <li>Активируется мгновенно</li>
+          <li>Все функции базового</li>
+          <li>Удобно для серии туров</li>
+        </ul>
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-s" target="_blank">Купить пакет →</a>
+      </div>
+      <div class="pc">
+        <div class="pc-nm">Пакет 10 разборов</div>
+        <div class="pc-am"><span class="pc-cu">₽</span>299</div>
+        <div class="pc-pe">вместо 490 ₽</div>
+        <div class="pc-sv">Экономия 39%</div>
+        <div class="pc-ln"></div>
+        <ul class="pc-li">
+          <li>10 разборов на балансе</li>
+          <li>Баланс не сгорает</li>
+          <li>Активируется мгновенно</li>
+          <li>Все функции базового</li>
+          <li>Лучший выбор на сезон</li>
+        </ul>
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">Купить пакет →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="tr-sec">
+  <div class="tr-grid reveal">
+    <div class="tr-item"><div class="tr-ic">🔒</div><div class="tr-t">Безопасная оплата</div><div class="tr-b">СБП и карты через ЮКассу. Никаких данных боту — всё через банк.</div></div>
+    <div class="tr-item"><div class="tr-ic">📡</div><div class="tr-t">Официальные данные</div><div class="tr-b">Статистика из профессиональной базы — 1200+ лиг мира, обновляется после каждого матча.</div></div>
+    <div class="tr-item"><div class="tr-ic">⚡</div><div class="tr-t">3 минуты — гарантия</div><div class="tr-b">После оплаты разбор приходит автоматически. Никакого ручного труда.</div></div>
+    <div class="tr-item"><div class="tr-ic">💬</div><div class="tr-t">Поддержка 24/7</div><div class="tr-b">Что-то пошло не так — вернём деньги или сделаем разбор повторно.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-in reveal">
+    <h2 class="cta-h"><span class="c1">АНАЛИТИКА</span><span class="c2">ПЕРВЫЙ РАЗБОР</span><span class="c3">ЗА 49 РУБЛЕЙ</span></h2>
+    <p class="cta-p">Никакой регистрации. Открываешь бот — и сразу к делу.</p>
+    <div class="cta-pill">MATCHIUM · АНАЛИТИКА МАТЧЕЙ · @matchium_bot</div>
+    <br><br>
+    <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank" style="display:inline-flex;margin-top:8px">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
+      Открыть в Telegram
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">MATCHIUM</div>
+  <div class="f-links"><a href="/oferta.html">Публичная оферта</a><a href="https://t.me/matchium_bot" target="_blank">@matchium_bot</a></div>
+  <div class="f-copy">© 2025 Matchium</div>
+</footer>
+
+</div>
+
+<script>
+window.addEventListener('load',()=>{
+  const intro=document.getElementById('intro');
+  const site=document.getElementById('site');
+  setTimeout(()=>{
+    intro.classList.add('done');
+    site.classList.add('visible');
+    setTimeout(()=>intro.style.display='none',800);
+  },2000);
+});
+
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}});
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.pr-cards .pc,.steps .step,.tr-grid .tr-item,.feat-grid .feat-card').forEach((el,i)=>{
+  el.style.transitionDelay=(i*.09)+'s';
+});
+</script>
+</body>
+</html>
