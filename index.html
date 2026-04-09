@@ -1,1009 +1,573 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matchium — Аналитика матчей</title>
-<meta name="description" content="Профессиональный разбор футбольных матчей на основе данных. Форма команд, статистика, вердикт аналитика — за 49 ₽.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --black: #080810;
-  --surface: #0f0f1a;
-  --surface2: #14141f;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #e8e8f0;
-  --muted: #6b6b80;
-  --accent: #c8f035;
-  --accent2: #a8d020;
-  --accent-dim: rgba(200,240,53,0.1);
-  --accent-dim2: rgba(200,240,53,0.05);
-  --red: #ff4444;
-  --gold: #f0c040;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--black);
-  color: var(--text);
-  font-family: 'Geologica', sans-serif;
-  font-weight: 300;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* ─── NOISE OVERLAY ─── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: .4;
-}
-
-/* ─── NAV ─── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(to bottom, rgba(8,8,16,.95), transparent);
-  backdrop-filter: blur(12px);
-}
-
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 3px;
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.nav-badge {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--border2);
-  padding: 6px 14px;
-  border-radius: 20px;
-}
-
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 120px 40px 80px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Grid background */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(200,240,53,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,240,53,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
-}
-
-/* Glow blobs */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-}
-.blob-1 {
-  width: 500px; height: 500px;
-  background: rgba(200,240,53,0.08);
-  top: -100px; right: -100px;
-  animation: drift 12s ease-in-out infinite alternate;
-}
-.blob-2 {
-  width: 400px; height: 400px;
-  background: rgba(80,120,255,0.06);
-  bottom: 0; left: -80px;
-  animation: drift 15s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes drift {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(30px, 20px) scale(1.1); }
-}
-
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  max-width: 1100px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid rgba(200,240,53,0.3);
-  background: var(--accent-dim2);
-  padding: 7px 16px;
-  border-radius: 20px;
-  margin-bottom: 36px;
-  animation: fadeUp .8s ease both;
-}
-
-.hero-tag::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: pulse 2s ease infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .4; transform: scale(.8); }
-}
-
-h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 12vw, 160px);
-  line-height: .92;
-  letter-spacing: 2px;
-  color: var(--text);
-  margin-bottom: 8px;
-  animation: fadeUp .8s .1s ease both;
-}
-
-h1 .accent-word {
-  color: var(--accent);
-  display: block;
-}
-
-.hero-sub {
-  font-size: clamp(16px, 2vw, 20px);
-  font-weight: 300;
-  color: var(--muted);
-  max-width: 500px;
-  margin: 28px 0 48px;
-  animation: fadeUp .8s .2s ease both;
-  line-height: 1.7;
-}
-
-.hero-cta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  animation: fadeUp .8s .3s ease both;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--accent);
-  color: var(--black);
-  font-family: 'Geologica', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 16px 32px;
-  border-radius: 4px;
-  text-decoration: none;
-  letter-spacing: .3px;
-  transition: all .2s;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.15);
-  transform: translateX(-100%);
-  transition: transform .3s ease;
-}
-.btn-primary:hover::before { transform: translateX(0); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,240,53,.3); }
-
-.btn-ghost {
-  font-size: 14px;
-  color: var(--muted);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color .2s;
-}
-.btn-ghost:hover { color: var(--text); }
-
-.hero-stats {
-  display: flex;
-  gap: 40px;
-  margin-top: 72px;
-  padding-top: 40px;
-  border-top: 1px solid var(--border);
-  animation: fadeUp .8s .4s ease both;
-  flex-wrap: wrap;
-}
-
-.stat-item {}
-.stat-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  color: var(--accent);
-  letter-spacing: 1px;
-  line-height: 1;
-}
-.stat-label {
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: .5px;
-  margin-top: 4px;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ─── SAMPLE ANALYSIS ─── */
-.sample-section {
-  padding: 100px 40px;
-  position: relative;
-}
-
-.section-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 16px;
-}
-
-.section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(40px, 6vw, 72px);
-  letter-spacing: 1px;
-  line-height: 1;
-  margin-bottom: 16px;
-}
-
-.section-sub {
-  font-size: 16px;
-  color: var(--muted);
-  max-width: 480px;
-  margin-bottom: 56px;
-}
-
-.sample-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* Mock Telegram message */
-.tg-mockup {
-  background: #17212b;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
-  max-width: 480px;
-  box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(200,240,53,0.05);
-  position: relative;
-}
-
-.tg-header {
-  background: #111b22;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-
-.tg-avatar {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #5b4fcf, #1d6fa4);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px;
-  color: #fff;
-  letter-spacing: 1px;
-  flex-shrink: 0;
-}
-
-.tg-name { font-size: 14px; font-weight: 600; color: #e8edf2; }
-.tg-online { font-size: 11px; color: var(--accent); }
-
-.tg-body { padding: 16px; }
-
-.tg-msg {
-  background: #182533;
-  border-radius: 4px 14px 14px 14px;
-  padding: 12px 15px 10px;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: #c8d8e4;
-  border: 1px solid rgba(255,255,255,.05);
-}
-
-.tg-msg-title {
-  font-weight: 600;
-  font-size: 14px;
-  color: #e8f4ff;
-  margin-bottom: 2px;
-}
-.tg-msg-badge {
-  font-family: monospace;
-  font-size: 11px;
-  background: #0d1f30;
-  padding: 2px 7px;
-  border-radius: 4px;
-  color: #6b9ac4;
-  display: inline-block;
-  margin-bottom: 10px;
-}
-.tg-divider { color: #2a3f52; font-size: 12px; margin: 8px 0; letter-spacing: 1px; }
-.tg-section-head { font-weight: 600; font-size: 13px; color: #d4e8f5; margin-bottom: 6px; }
-.form-dots { font-size: 14px; line-height: 1.9; }
-.form-dots b { color: #b8d0e4; font-weight: 500; }
-.stat-rows { font-size: 12.5px; color: #9ab8cc; line-height: 1.8; }
-.stat-rows b { color: #cce0f0; }
-.analysis-p { font-size: 12.5px; color: #9ab8cc; line-height: 1.65; margin-bottom: 6px; }
-.verdict-block {
-  background: rgba(76,175,113,0.08);
-  border-left: 3px solid #4caf71;
-  padding: 8px 11px;
-  border-radius: 0 6px 6px 0;
-  font-size: 12.5px;
-  color: #90d4a8;
-  line-height: 1.5;
-  margin: 4px 0;
-}
-.verdict-block b { color: #b2f0c8; }
-.risk-block {
-  font-size: 12px;
-  color: #e8a060;
-  background: rgba(240,160,60,0.07);
-  border-left: 3px solid #e8a060;
-  padding: 6px 10px;
-  border-radius: 0 5px 5px 0;
-  margin-top: 4px;
-}
-.tg-time {
-  font-size: 10.5px;
-  color: #3a5068;
-  text-align: right;
-  margin-top: 5px;
-}
-.tg-footer-code {
-  font-family: monospace;
-  font-size: 10.5px;
-  color: #3a5068;
-  background: #0d1f30;
-  padding: 2px 7px;
-  border-radius: 4px;
-  margin-top: 8px;
-  display: inline-block;
-}
-
-/* Two column layout */
-.sample-layout {
-  display: grid;
-  grid-template-columns: 480px 1fr;
-  gap: 60px;
-  align-items: start;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.sample-explain { padding-top: 20px; }
-.explain-item {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--border);
-}
-.explain-item:last-child { border-bottom: none; }
-.explain-icon {
-  width: 40px; height: 40px;
-  background: var(--accent-dim);
-  border: 1px solid rgba(200,240,53,0.2);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.explain-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-.explain-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-/* ─── HOW IT WORKS ─── */
-.how-section {
-  padding: 100px 40px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.steps-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  margin-top: 56px;
-}
-
-.step-card {
-  background: var(--surface2);
-  padding: 36px 32px;
-  position: relative;
-  transition: background .2s;
-}
-.step-card:hover { background: #181828; }
-.step-card:first-child { border-radius: 12px 0 0 12px; }
-.step-card:last-child { border-radius: 0 12px 12px 0; }
-
-.step-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  color: rgba(200,240,53,0.08);
-  line-height: 1;
-  margin-bottom: 20px;
-  letter-spacing: 2px;
-}
-
-.step-title {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text);
-  margin-bottom: 10px;
-}
-
-.step-body {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.step-arrow {
-  position: absolute;
-  right: -14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px; height: 28px;
-  background: var(--black);
-  border: 1px solid var(--border2);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px;
-  color: var(--accent);
-  z-index: 2;
-}
-
-/* ─── PRICING ─── */
-.pricing-section {
-  padding: 100px 40px;
-}
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  max-width: 1100px;
-  margin: 56px auto 0;
-}
-
-.price-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px;
-  transition: all .2s;
-  position: relative;
-}
-.price-card:hover {
-  border-color: var(--border2);
-  transform: translateY(-4px);
-}
-.price-card.featured {
-  background: var(--accent-dim);
-  border-color: rgba(200,240,53,0.3);
-}
-.price-card.featured:hover { border-color: rgba(200,240,53,0.5); }
-
-.featured-badge {
-  position: absolute;
-  top: -10px; left: 50%; transform: translateX(-50%);
-  background: var(--accent);
-  color: var(--black);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 3px 12px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.price-name {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-.price-featured .price-name { color: var(--accent); }
-
-.price-amount {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 56px;
-  letter-spacing: 1px;
-  line-height: 1;
-  color: var(--text);
-}
-.price-currency {
-  font-family: 'Geologica', sans-serif;
-  font-size: 24px;
-  font-weight: 300;
-  vertical-align: super;
-  margin-right: 2px;
-}
-.price-period {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-  margin-bottom: 20px;
-}
-
-.price-features {
-  list-style: none;
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
-}
-.price-features li {
-  font-size: 13px;
-  color: var(--muted);
-  padding: 5px 0;
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-}
-.price-features li::before {
-  content: '→';
-  color: var(--accent);
-  flex-shrink: 0;
-  font-size: 12px;
-  margin-top: 2px;
-}
-.price-features .featured-feat { color: var(--text); }
-
-/* ─── CTA SECTION ─── */
-.cta-section {
-  padding: 120px 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-section::before {
-  content: '';
-  position: absolute;
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(200,240,53,0.06) 0%, transparent 70%);
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.cta-inner { position: relative; z-index: 2; }
-
-.cta-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(48px, 8vw, 96px);
-  letter-spacing: 2px;
-  line-height: .95;
-  margin-bottom: 24px;
-}
-
-.cta-title .line2 { color: var(--accent); }
-
-.cta-sub {
-  font-size: 16px;
-  color: var(--muted);
-  margin-bottom: 40px;
-}
-
-.price-highlight {
-  display: inline-block;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 2px;
-  color: var(--accent);
-  border: 1px solid rgba(200,240,53,0.3);
-  background: var(--accent-dim2);
-  padding: 10px 24px;
-  border-radius: 4px;
-  margin-bottom: 36px;
-}
-
-/* ─── FOOTER ─── */
-footer {
-  padding: 40px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.footer-requisites {
-  width: 100%;
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.footer-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--accent);
-}
-
-.footer-text {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* ─── SCROLL REVEAL ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity .8s ease, transform .8s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 900px) {
-  nav { padding: 16px 20px; }
-  .hero { padding: 100px 20px 60px; }
-  .sample-section, .how-section, .pricing-section, .cta-section { padding: 72px 20px; }
-  .sample-layout { grid-template-columns: 1fr; }
-  .tg-mockup { max-width: 100%; }
-  .steps-grid { grid-template-columns: 1fr; gap: 2px; }
-  .step-card:first-child { border-radius: 12px 12px 0 0; }
-  .step-card:last-child { border-radius: 0 0 12px 12px; }
-  .step-arrow { display: none; }
-  .hero-stats { gap: 24px; }
-  footer { flex-direction: column; gap: 12px; text-align: center; }
-}
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">MATCHIUM</a>
-  <span class="nav-badge">Аналитика матчей</span>
-</nav>
-
-<!-- BLOB BACKGROUNDS -->
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-
-<!-- ─── HERO ─── -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-tag">⚽ Профессиональная аналитика</div>
-    <h1>
-      РАЗБОР
-      <span class="accent-word">МАТЧА</span>
-    </h1>
-    <p class="hero-sub">Данные о форме команд, голевая статистика и чёткий вердикт аналитика. Прямо в Telegram — за&nbsp;49&nbsp;₽.</p>
-    <div class="hero-cta">
-      <a href="https://t.me/matchium_bot" class="btn-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
-        Попробовать в Telegram
-      </a>
-      <a href="#how" class="btn-ghost">Как это работает →</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">49₽</div>
-        <div class="stat-label">за один разбор</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">3 МИН</div>
-        <div class="stat-label">время доставки</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">1000+</div>
-        <div class="stat-label">лиг в базе</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">без выходных</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── SAMPLE ─── -->
-<section class="sample-section">
-  <div class="sample-container">
-    <div class="reveal">
-      <div class="section-label">Пример работы</div>
-      <h2 class="section-title">ЧТО ВЫ ПОЛУЧАЕТЕ</h2>
-      <p class="section-sub">Реальный разбор — структурированный, с данными и чётким выводом. Не гадание, а аналитика.</p>
-    </div>
-
-    <div class="sample-layout reveal">
-      <!-- Telegram mockup -->
-      <div class="tg-mockup">
-        <div class="tg-header">
-          <div class="tg-avatar">M</div>
-          <div>
-            <div class="tg-name">Matchium</div>
-            <div class="tg-online">● онлайн</div>
-          </div>
-        </div>
-        <div class="tg-body">
-          <div class="tg-msg">
-            <div class="tg-msg-title">⚽ Реал Мадрид — Манчестер Сити</div>
-            <div class="tg-msg-badge">Matchium Premium · аналитика</div>
-
-            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
-
-            <div class="tg-section-head">📊 Форма команд</div>
-            <div class="form-dots">
-              <b>Реал Мадрид:</b><br>
-              🟢 🟢 🟢 🟡 🟢 🟢 🔴 🟢 🟢 🟢<br>
-              <b>Манчестер Сити:</b><br>
-              🟢 🟡 🟢 🟢 🔴 🟢 🟢 🟡 🟢 🔴
-            </div>
-
-            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
-
-            <div class="tg-section-head">📈 Статистика · 10 матчей</div>
-            <div class="stat-rows">
-              <b>Реал Мадрид:</b> Забито: 23 · Пропущено: 8 · В/Н/П: 8/1/1<br>
-              <b>Манчестер Сити:</b> Забито: 19 · Пропущено: 11 · В/Н/П: 7/2/1
-            </div>
-
-            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
-
-            <div class="tg-section-head">🔍 Аналитика</div>
-            <div class="analysis-p">Реал Мадрид в выдающейся форме: 8 побед из 10, лишь 1 поражение, 23 забитых гола при 8 пропущенных. Атака продуктивна, оборона надёжна — лучший баланс среди финалистов.</div>
-            <div class="analysis-p">Манчестер Сити также в хорошей форме — 7 побед, 19 голов, но пропустил на 3 больше. По совокупным данным Реал выглядит чуть стабильнее в обороне.</div>
-
-            <div class="tg-divider">━━━━━━━━━━━━━━━</div>
-
-            <div class="tg-section-head">🎯 Вердикт</div>
-            <div class="verdict-block"><b>П1 или ТБ 2.5</b> — Реал смотрится фаворитом по форме. Обе команды результативны, матч должен быть голевым.</div>
-
-            <div class="risk-block">⚠️ <b>Риск:</b> матчи плей-офф ЛЧ имеют особую мотивацию — статистика регулярки применима частично.</div>
-
-            <div class="tg-footer-code">Matchium · @matchium_bot · API-Football</div>
-            <div class="tg-time">14:31 ✓✓</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Explanation -->
-      <div class="sample-explain">
-        <div class="explain-item">
-          <div class="explain-icon">📊</div>
-          <div>
-            <div class="explain-title">Визуальная форма команд</div>
-            <div class="explain-body">Точки 🟢🟡🔴 за последние 10 матчей — видишь серию одним взглядом без чтения текста.</div>
-          </div>
-        </div>
-        <div class="explain-item">
-          <div class="explain-icon">📈</div>
-          <div>
-            <div class="explain-title">Реальные данные, не мнение</div>
-            <div class="explain-body">Голы за/против, W/D/L за актуальный период. Всё из официальной базы API-Football.</div>
-          </div>
-        </div>
-        <div class="explain-item">
-          <div class="explain-icon">🎯</div>
-          <div>
-            <div class="explain-title">Чёткий вердикт</div>
-            <div class="explain-body">Не «возможно победит» — а конкретная идея с обоснованием. Или честное «данных недостаточно».</div>
-          </div>
-        </div>
-        <div class="explain-item">
-          <div class="explain-icon">⚡</div>
-          <div>
-            <div class="explain-title">3 минуты с момента заказа</div>
-            <div class="explain-body">Пишешь «Команда 1 — Команда 2», платишь, через 3 минуты получаешь полный разбор.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── HOW IT WORKS ─── -->
-<section class="how-section" id="how">
-  <div class="steps-container">
-    <div class="reveal">
-      <div class="section-label">Процесс</div>
-      <h2 class="section-title">ТРИ ШАГА</h2>
-      <p class="section-sub">Никаких регистраций, личных кабинетов и ожиданий.</p>
-    </div>
-    <div class="steps-grid reveal">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div class="step-title">Пишешь матч</div>
-        <div class="step-body">Отправляешь боту название команд в любом формате — на русском, английском, с лигой или без. GPT сам разберёт.</div>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div class="step-title">Оплачиваешь</div>
-        <div class="step-body">Бот формирует ссылку на оплату через СБП. Никаких карточных данных боту — всё через банк.</div>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="step-title">Получаешь разбор</div>
-        <div class="step-body">Через 3 минуты в чат приходит полная аналитика: форма, статистика, вердикт и главный риск.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── PRICING ─── -->
-<section class="pricing-section" id="pricing">
-  <div style="max-width:1100px; margin: 0 auto;">
-    <div class="reveal">
-      <div class="section-label">Тарифы</div>
-      <h2 class="section-title">ПРОСТО И ЧЕСТНО</h2>
-      <p class="section-sub">Платишь только за то, что используешь.</p>
-    </div>
-    <div class="pricing-grid reveal">
-
-      <div class="price-card">
-        <div class="price-name">Один разбор</div>
-        <div class="price-amount"><span class="price-currency">₽</span>49</div>
-        <div class="price-period">за матч</div>
-        <ul class="price-features">
-          <li>Форма последних 10 матчей</li>
-          <li>Голевая статистика</li>
-          <li>Аналитический разбор</li>
-          <li>Вердикт и главный риск</li>
-        </ul>
-      </div>
-
-      <div class="price-card featured">
-        <div class="featured-badge">Выгоднее всего</div>
-        <div class="price-name" style="color: var(--accent);">Расширенный</div>
-        <div class="price-amount"><span class="price-currency">₽</span>149</div>
-        <div class="price-period">за матч</div>
-        <ul class="price-features">
-          <li class="featured-feat">Всё из базового</li>
-          <li class="featured-feat">История личных встреч (H2H)</li>
-          <li class="featured-feat">Прогноз по тоталу</li>
-          <li class="featured-feat">PDF-карточка разбора</li>
-        </ul>
-      </div>
-
-      <div class="price-card">
-        <div class="price-name">Пакет 10 разборов</div>
-        <div class="price-amount"><span class="price-currency">₽</span>390</div>
-        <div class="price-period">экономия 61%</div>
-        <ul class="price-features">
-          <li>10 базовых разборов</li>
-          <li>Баланс не сгорает</li>
-          <li>Подходит для серии туров</li>
-        </ul>
-      </div>
-
-      <div class="price-card">
-        <div class="price-name">Подписка 30 дней</div>
-        <div class="price-amount"><span class="price-currency">₽</span>1490</div>
-        <div class="price-period">в месяц</div>
-        <ul class="price-features">
-          <li>50 разборов в месяц</li>
-          <li>Расширенный формат</li>
-          <li>Приоритетная обработка</li>
-          <li>Для активных бетторов</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── CTA ─── -->
-<section class="cta-section">
-  <div class="cta-inner reveal">
-    <h2 class="cta-title">
-      ПЕРВЫЙ РАЗБОР<br>
-      <span class="line2">ЗА 49 РУБЛЕЙ</span>
-    </h2>
-    <p class="cta-sub">Никакой регистрации. Открываешь бот — и сразу к делу.</p>
-    <div class="price-highlight">MATCHIUM · АНАЛИТИКА МАТЧЕЙ</div>
-    <br>
-    <a href="https://t.me/matchium_bot" class="btn-primary" style="display:inline-flex; margin-top: 8px;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>
-      Открыть в Telegram
-    </a>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-logo">MATCHIUM</div>
-    <div class="footer-text">Аналитика футбольных матчей · На основе данных, а не мнений</div>
-    <div class="footer-text" style="color: #3a3a4a;">© 2025 Matchium</div>
-  </div>
-  <div class="footer-requisites">
-    <a href="/oferta.html" style="color: #444; font-size: 12px; text-decoration: none; font-family: inherit; transition: color .2s;" onmouseover="this.style.color='#c8f035'" onmouseout="this.style.color='#444'">Публичная оферта и реквизиты</a>
-  </div>
-</footer>
-
-<script>
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Stagger children of reveal grids
-document.querySelectorAll('.steps-grid .step-card, .pricing-grid .price-card, .sample-explain .explain-item').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.1) + 's';
-});
-</script>
-</body>
-</html>
+{\rtf1\ansi\ansicpg1251\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+\
+<html lang="ru">\
+<head>\
+<meta charset="UTF-8">\
+<meta name="viewport" content="width=device-width, initial-scale=1.0">\
+<title>Matchium \'97 \uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1092 \u1091 \u1090 \u1073 \u1086 \u1083 \u1100 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </title>\
+<meta name="description" content="\uc0\u1055 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1099 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1092 \u1091 \u1090 \u1073 \u1086 \u1083 \u1100 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \u1085 \u1072  \u1086 \u1089 \u1085 \u1086 \u1074 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093 . \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 , \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \'97 \u1079 \u1072  49 \u8381  \u1087 \u1088 \u1103 \u1084 \u1086  \u1074  Telegram.">\
+<link rel="preconnect" href="https://fonts.googleapis.com">\
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">\
+<style>\
+:root\{--black:#080810;--surface:#0f0f1a;--surface2:#14141f;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e8e8f0;--muted:#6b6b80;--accent:#c8f035;--accent2:#a8d020;--accent-dim:rgba(200,240,53,0.1);--accent-dim2:rgba(200,240,53,0.05)\}\
+*,*::before,*::after\{box-sizing:border-box;margin:0;padding:0\}\
+html\{scroll-behavior:smooth\}\
+body\{background:var(--black);color:var(--text);font-family:'Geologica',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden\}\
+body::before\{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:.35\}\
+\
+/* INTRO */\
+#intro\{position:fixed;inset:0;z-index:9000;background:var(\'96black);display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none\}\
+#intro.done\{opacity:0;transition:opacity .7s ease;pointer-events:none\}\
+.ball-trail\{position:absolute;font-size:72px;animation:ballFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;filter:drop-shadow(0 0 40px rgba(200,240,53,0.5));will-change:transform,opacity;user-select:none;line-height:1\}\
+@keyframes ballFly\{0%\{transform:translate(-65vw,25vh) rotate(0deg) scale(.5);opacity:0\}15%\{opacity:1\}55%\{transform:translate(2vw,-2vh) rotate(380deg) scale(1.05);opacity:1\}75%\{transform:translate(2vw,-2vh) rotate(410deg) scale(1);opacity:1\}100%\{transform:translate(72vw,-28vh) rotate(760deg) scale(.3);opacity:0\}\}\
+.streak\{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.28),transparent);border-radius:2px;animation:streakFly 1.5s cubic-bezier(.2,.1,.1,1) forwards;pointer-events:none;opacity:0\}\
+.s1\{width:220px;top:50%;left:28%;animation-delay:.12s\}\
+.s2\{width:150px;top:calc(50% + 18px);left:26%;animation-delay:.18s\}\
+.s3\{width:100px;top:calc(50% - 18px);left:31%;animation-delay:.24s\}\
+@keyframes streakFly\{0%\{opacity:0;transform:scaleX(0) translateX(-50px)\}25%\{opacity:.7;transform:scaleX(1) translateX(0)\}65%\{opacity:.7;transform:scaleX(1) translateX(90px)\}100%\{opacity:0;transform:scaleX(.1) translateX(220px)\}\}\
+.intro-logo\{position:absolute;font-family:\'91Bebas Neue\'92,sans-serif;font-size:60px;letter-spacing:10px;color:var(\'96accent);opacity:0;transform:scale(.85);animation:logoIn .5s ease .95s forwards;text-shadow:0 0 60px rgba(200,240,53,0.4)\}\
+@keyframes logoIn\{to\{opacity:1;transform:scale(1)\}\}\
+.intro-sub\{position:absolute;top:calc(50% + 50px);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(\'96muted);opacity:0;animation:logoIn .4s ease 1.15s forwards\}\
+#site\{opacity:0;transition:opacity .9s ease\}\
+#site.visible\{opacity:1\}\
+\
+/* BLOBS */\
+.blob\{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0\}\
+.blob1\{width:600px;height:600px;background:rgba(200,240,53,0.07);top:-150px;right:-150px;animation:drift 14s ease-in-out infinite alternate\}\
+.blob2\{width:450px;height:450px;background:rgba(60,80,200,0.05);bottom:-50px;left:-100px;animation:drift 18s ease-in-out infinite alternate-reverse\}\
+@keyframes drift\{from\{transform:translate(0,0) scale(1)\}to\{transform:translate(30px,20px) scale(1.1)\}\}\
+\
+/* NAV */\
+nav\{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,16,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(\'96border)\}\
+.nav-logo\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:26px;letter-spacing:4px;color:var(\'96accent);text-decoration:none\}\
+.nav-links\{display:flex;gap:28px;align-items:center\}\
+.nav-link\{font-size:13px;color:var(\'96muted);text-decoration:none;transition:color .2s;font-weight:400\}\
+.nav-link:hover\{color:var(\'96text)\}\
+.nav-cta\{font-family:\'91Geologica\'92,sans-serif;font-size:13px;font-weight:500;color:var(\'96black);background:var(\'96accent);border:none;padding:9px 20px;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s\}\
+.nav-cta:hover\{background:var(\'96accent2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(200,240,53,0.25)\}\
+\
+/* HERO */\
+.hero\{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden\}\
+.hero::after\{content:\'92\'92;position:absolute;inset:0;background-image:linear-gradient(rgba(200,240,53,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,240,53,0.025) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 85% 80% at 25% 40%,black 10%,transparent 75%);pointer-events:none\}\
+.hero-inner\{position:relative;z-index:2;max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 460px;gap:72px;align-items:center\}\
+\
+.hero-eyebrow\{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;opacity:0;animation:fadeUp .8s .1s ease forwards\}\
+.ey-dot\{width:7px;height:7px;background:var(\'96accent);border-radius:50%;animation:pulse 2.5s ease-in-out infinite\}\
+@keyframes pulse\{0%,100%\{box-shadow:0 0 0 0 rgba(200,240,53,.5)\}50%\{box-shadow:0 0 0 7px rgba(200,240,53,0)\}\}\
+.ey-text\{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(\'96accent)\}\
+\
+h1\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(76px,10.5vw,152px);line-height:.88;letter-spacing:2px;opacity:0;animation:fadeUp .8s .2s ease forwards\}\
+h1 .l1\{display:block;color:rgba(232,232,240,0.15)\}\
+h1 .l2\{display:block;color:var(\'96text)\}\
+h1 .l3\{display:block;color:var(\'96accent)\}\
+\
+.hero-desc\{font-size:17px;font-weight:300;color:#8888a0;max-width:480px;margin:28px 0 44px;line-height:1.75;opacity:0;animation:fadeUp .8s .3s ease forwards\}\
+.hero-desc strong\{color:var(\'96text);font-weight:500\}\
+\
+.hero-actions\{display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .4s ease forwards\}\
+.btn-primary\{display:inline-flex;align-items:center;gap:10px;background:var(\'96accent);color:var(\'96black);font-family:\'91Geologica\'92,sans-serif;font-size:15px;font-weight:600;padding:15px 30px;border-radius:4px;text-decoration:none;position:relative;overflow:hidden;transition:all .25s\}\
+.btn-primary::after\{content:\'92\'92;position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s ease\}\
+.btn-primary:hover::after\{transform:translateX(0)\}\
+.btn-primary:hover\{transform:translateY(-2px);box-shadow:0 10px 36px rgba(200,240,53,.3)\}\
+.btn-ghost\{font-size:14px;color:var(\'96muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;font-weight:400\}\
+.btn-ghost:hover\{color:var(\'96text)\}\
+\
+.hero-stats\{display:flex;gap:0;margin-top:64px;padding-top:40px;border-top:1px solid var(\'96border);opacity:0;animation:fadeUp .8s .5s ease forwards\}\
+.stat-item\{flex:1;padding-right:28px;border-right:1px solid var(\'96border)\}\
+.stat-item:last-child\{border-right:none;padding-left:28px;padding-right:0\}\
+.stat-item:not(:first-child):not(:last-child)\{padding:0 28px\}\
+.stat-num\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:44px;color:var(\'96accent);letter-spacing:1px;line-height:1\}\
+.stat-label\{font-size:12px;color:var(\'96muted);margin-top:5px;letter-spacing:.3px\}\
+\
+@keyframes fadeUp\{from\{opacity:0;transform:translateY(24px)\}to\{opacity:1;transform:translateY(0)\}\}\
+\
+/* HERO TG CARD \'97 full rich example */\
+.hero-card\{position:relative;opacity:0;animation:fadeUp .9s .6s ease forwards\}\
+.hcg1\{position:absolute;width:200px;height:200px;background:rgba(200,240,53,0.12);border-radius:50%;filter:blur(60px);top:-40px;right:-40px;pointer-events:none\}\
+.hcg2\{position:absolute;width:150px;height:150px;background:rgba(60,80,255,0.08);border-radius:50%;filter:blur(50px);bottom:-30px;left:-20px;pointer-events:none\}\
+\
+.tg-phone\{background:#17212b;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(200,240,53,0.04),inset 0 1px 0 rgba(255,255,255,0.05);position:relative\}\
+.tg-phone::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)\}\
+.tg-bar\{background:#0d1923;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05)\}\
+.tg-ava\{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1d5f8a,#0d3a56);display:flex;align-items:center;justify-content:center;font-family:\'91Bebas Neue\'92,sans-serif;font-size:15px;color:var(\'96accent);letter-spacing:1px;flex-shrink:0;border:1px solid rgba(200,240,53,0.2)\}\
+.tg-nm\{font-size:13px;font-weight:600;color:#e0eaf4\}\
+.tg-on\{font-size:11px;color:var(\'96accent)\}\
+.tg-body\{padding:14px;background:#17212b\}\
+.tg-msg\{background:#1c2f3f;border-radius:4px 14px 14px 14px;padding:14px 16px 11px;font-size:13px;line-height:1.65;color:#b0c8d8;border:1px solid rgba(255,255,255,0.04)\}\
+\
+.tm-t\{font-size:15px;font-weight:700;color:#e8f4ff;margin-bottom:3px\}\
+.tm-b\{font-family:monospace;font-size:11px;color:#4a7a9b;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:10px\}\
+.tm-d\{color:#1a3348;font-size:11px;margin:9px 0;letter-spacing:.5px\}\
+.tm-sh\{font-size:13px;font-weight:600;color:#c0d8e8;margin-bottom:6px\}\
+.fl\{font-size:13px;line-height:2.1\}\
+.fl b\{color:#90b4c8;font-weight:500\}\
+.sb\{font-size:12.5px;color:#7a9eb0;line-height:2\}\
+.sb b\{color:#aaccdc;font-weight:500\}\
+.ap\{font-size:12.5px;color:#7a9eb0;line-height:1.7;margin-bottom:6px\}\
+.vb\{background:rgba(60,180,100,0.09);border-left:2.5px solid #3cb464;padding:10px 13px;border-radius:0 7px 7px 0;font-size:12.5px;color:#7dd4a0;line-height:1.6;margin:5px 0\}\
+.vb b\{color:#b0f0c8\}\
+.rb\{font-size:12px;color:#d4904a;background:rgba(212,144,74,0.07);border-left:2.5px solid #d4904a;padding:7px 12px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5\}\
+.tm-f\{font-family:monospace;font-size:10px;color:#243444;background:rgba(0,0,0,.3);padding:2px 7px;border-radius:3px;display:inline-block;margin-top:10px\}\
+.tm-ti\{font-size:10px;color:#243444;text-align:right;margin-top:3px\}\
+\
+/* MARQUEE */\
+.mq-wrap\{overflow:hidden;border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border);background:var(\'96surface);padding:13px 0;position:relative;z-index:2\}\
+.mq-track\{display:flex;width:max-content;animation:mq 30s linear infinite\}\
+.mq-item\{display:flex;align-items:center;gap:10px;padding:0 36px;font-size:11.5px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:var(\'96muted);white-space:nowrap\}\
+.mq-item span\{color:var(\'96accent);font-size:13px\}\
+@keyframes mq\{from\{transform:translateX(0)\}to\{transform:translateX(-50%)\}\}\
+\
+/* SECTION COMMONS */\
+section\{position:relative;z-index:2\}\
+.s-ey\{font-size:10.5px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(\'96accent);margin-bottom:14px;display:flex;align-items:center;gap:10px\}\
+.s-ey::before\{content:\'92\'92;width:20px;height:1px;background:var(\'96accent)\}\
+.s-title\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(44px,6vw,78px);line-height:.9;letter-spacing:1.5px;color:var(\'96text);margin-bottom:14px\}\
+.s-sub\{font-size:15px;font-weight:300;color:var(\'96muted);max-width:500px;line-height:1.75\}\
+\
+/* WHAT YOU GET \'97 features only, no panel */\
+.what-sec\{padding:120px 48px\}\
+.what-in\{max-width:1160px;margin:0 auto\}\
+.what-head\{margin-bottom:56px\}\
+.what-head .s-sub\{margin-top:16px\}\
+\
+.feat-grid\{display:grid;grid-template-columns:repeat(4,1fr);gap:3px\}\
+.feat-card\{background:var(\'96surface2);padding:32px 28px;border-radius:0;transition:background .2s;position:relative\}\
+.feat-card:first-child\{border-radius:14px 0 0 14px\}\
+.feat-card:last-child\{border-radius:0 14px 14px 0\}\
+.feat-card:hover\{background:#13131f\}\
+.feat-card::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,53,0.08),transparent)\}\
+.feat-num\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:52px;color:rgba(200,240,53,0.07);line-height:1;margin-bottom:16px;transition:color .25s;letter-spacing:1px\}\
+.feat-card:hover .feat-num\{color:rgba(200,240,53,0.12)\}\
+.feat-ic\{font-size:24px;margin-bottom:12px\}\
+.feat-t\{font-size:15px;font-weight:500;color:var(\'96text);margin-bottom:8px\}\
+.feat-b\{font-size:13px;color:var(\'96muted);line-height:1.7\}\
+\
+/* HOW */\
+.how-sec\{padding:120px 48px;background:var(\'96surface);border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border)\}\
+.how-in\{max-width:1160px;margin:0 auto\}\
+.steps\{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:60px\}\
+.step\{background:var(\'96surface2);padding:40px 34px;position:relative;transition:background .2s\}\
+.step:first-child\{border-radius:14px 0 0 14px\}\
+.step:last-child\{border-radius:0 14px 14px 0\}\
+.step:hover\{background:#13131f\}\
+.step-n\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:88px;line-height:.9;color:rgba(200,240,53,0.06);letter-spacing:2px;margin-bottom:20px;transition:color .25s\}\
+.step:hover .step-n\{color:rgba(200,240,53,0.10)\}\
+.step-i\{font-size:26px;margin-bottom:14px\}\
+.step-h\{font-size:17px;font-weight:500;color:var(\'96text);margin-bottom:9px\}\
+.step-p\{font-size:13px;color:var(\'96muted);line-height:1.7\}\
+.step-a\{position:absolute;right:-15px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:var(\'96black);border:1px solid var(\'96border2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(\'96accent);font-size:13px;z-index:3;box-shadow:0 0 0 4px var(\'96black)\}\
+\
+/* PRICING */\
+.pr-sec\{padding:120px 48px\}\
+.pr-in\{max-width:1160px;margin:0 auto\}\
+.pr-top\{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px\}\
+.pr-note\{font-size:14px;color:var(\'96muted);max-width:280px;text-align:right;line-height:1.65\}\
+.pr-cards\{display:grid;grid-template-columns:repeat(3,1fr);gap:14px\}\
+.pc\{background:var(\'96surface2);border:1px solid var(\'96border);border-radius:14px;padding:30px 26px;position:relative;transition:all .25s;overflow:hidden\}\
+.pc::before\{content:\'92\'92;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)\}\
+.pc:hover\{border-color:var(\'96border2);transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.4)\}\
+.pc.feat\{background:linear-gradient(160deg,rgba(200,240,53,0.07) 0%,var(\'96surface2) 60%);border-color:rgba(200,240,53,0.22)\}\
+.pc.feat::before\{background:linear-gradient(90deg,transparent,rgba(200,240,53,.35),transparent)\}\
+.pc.feat:hover\{border-color:rgba(200,240,53,0.38);box-shadow:0 20px 60px rgba(200,240,53,0.07)\}\
+.pc-hot\{position:absolute;top:18px;right:18px;font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:var(\'96accent);color:var(\'96black);padding:3px 10px;border-radius:20px\}\
+.pc-nm\{font-size:10.5px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(\'96muted);margin-bottom:18px\}\
+.feat .pc-nm\{color:var(\'96accent)\}\
+.pc-am\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:68px;line-height:1;color:var(\'96text);letter-spacing:1px\}\
+.pc-cu\{font-size:30px;vertical-align:super;color:#8888a0;margin-right:2px\}\
+.pc-pe\{font-size:13px;color:var(\'96muted);margin-top:5px\}\
+.pc-sv\{display:inline-block;font-size:11px;font-weight:500;color:var(\'96accent);background:var(\'96accent-dim2);border:1px solid rgba(200,240,53,0.18);padding:3px 10px;border-radius:4px;margin:8px 0 0\}\
+.pc-ln\{height:1px;background:var(\'96border);margin:22px 0\}\
+.pc-li\{list-style:none\}\
+.pc-li li\{display:flex;gap:9px;font-size:13px;color:#8888a0;padding:5px 0;line-height:1.5;align-items:flex-start\}\
+.pc-li li::before\{content:\'91\uc0\u10003 \'92;color:var(\'96accent);font-size:11px;flex-shrink:0;margin-top:2px;font-weight:700\}\
+.pc-btn\{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:26px;padding:13px 20px;border-radius:6px;font-family:\'91Geologica\'92,sans-serif;font-size:14px;font-weight:500;text-decoration:none;transition:all .22s;border:none;cursor:pointer\}\
+.pc-o\{background:transparent;border:1px solid var(\'96border2);color:#8888a0\}\
+.pc-o:hover\{border-color:rgba(200,240,53,0.3);color:var(\'96accent);background:var(\'96accent-dim2)\}\
+.pc-s\{background:var(\'96accent);color:var(\'96black)\}\
+.pc-s:hover\{background:var(\'96accent2);box-shadow:0 8px 28px rgba(200,240,53,0.28);transform:translateY(-1px)\}\
+\
+/* TRUST */\
+.tr-sec\{padding:64px 48px;background:var(\'96surface);border-top:1px solid var(\'96border);border-bottom:1px solid var(\'96border)\}\
+.tr-grid\{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(\'96border);border-radius:14px;overflow:hidden\}\
+.tr-item\{background:var(\'96surface2);padding:32px 28px;text-align:center;transition:background .2s\}\
+.tr-item:hover\{background:#131320\}\
+.tr-ic\{font-size:26px;margin-bottom:12px\}\
+.tr-t\{font-size:14px;font-weight:500;color:var(\'96text);margin-bottom:7px\}\
+.tr-b\{font-size:12.5px;color:var(\'96muted);line-height:1.65\}\
+\
+/* CTA */\
+.cta-sec\{padding:160px 48px;text-align:center;position:relative;overflow:hidden\}\
+.cta-sec::before\{content:\'92\'92;position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(200,240,53,0.05) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none\}\
+.cta-in\{position:relative;z-index:2\}\
+.cta-h\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:clamp(58px,9vw,120px);line-height:.88;letter-spacing:2px;margin-bottom:28px\}\
+.cta-h .c1\{display:block;color:rgba(232,232,240,0.12)\}\
+.cta-h .c2\{display:block;color:var(\'96text)\}\
+.cta-h .c3\{display:block;color:var(\'96accent)\}\
+.cta-p\{font-size:16px;color:var(\'96muted);margin-bottom:44px;line-height:1.7\}\
+.cta-pill\{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(200,240,53,0.18);background:var(\'96accent-dim2);padding:9px 22px;border-radius:40px;margin-bottom:36px;font-size:12px;color:var(\'96accent);letter-spacing:1px;font-weight:500\}\
+.cta-pill::before\{content:\'92\'92;width:6px;height:6px;background:var(\'96accent);border-radius:50%;animation:pulse 2s ease-in-out infinite\}\
+\
+/* FOOTER */\
+footer\{border-top:1px solid var(\'96border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;z-index:2\}\
+.f-logo\{font-family:\'91Bebas Neue\'92,sans-serif;font-size:20px;letter-spacing:4px;color:var(\'96accent)\}\
+.f-links\{display:flex;gap:24px\}\
+.f-links a\{font-size:12px;color:var(\'96muted);text-decoration:none;transition:color .2s\}\
+.f-links a:hover\{color:var(\'96text)\}\
+.f-copy\{font-size:12px;color:#333346\}\
+\
+/* REVEAL */\
+.reveal\{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease\}\
+.reveal.on\{opacity:1;transform:none\}\
+\
+/* RESPONSIVE */\
+@media(max-width:1024px)\{\
+.hero-inner\{grid-template-columns:1fr;gap:56px\}\
+.hero-card\{max-width:480px\}\
+.feat-grid\{grid-template-columns:1fr 1fr;gap:3px\}\
+.feat-card:nth-child(2)\{border-radius:0 14px 0 0\}\
+.feat-card:nth-child(3)\{border-radius:0 0 0 14px\}\
+.feat-card:first-child\{border-radius:14px 0 0 0\}\
+.feat-card:last-child\{border-radius:0 0 14px 0\}\
+.steps\{grid-template-columns:1fr;gap:3px\}\
+.step:first-child\{border-radius:14px 14px 0 0\}\
+.step:last-child\{border-radius:0 0 14px 14px\}\
+.step-a\{display:none\}\
+.pr-cards\{grid-template-columns:1fr\}\
+.tr-grid\{grid-template-columns:1fr 1fr\}\
+\}\
+@media(max-width:768px)\{\
+nav\{padding:0 20px\}\
+.nav-links .nav-link\{display:none\}\
+.hero,.what-sec,.how-sec,.pr-sec,.tr-sec,.cta-sec\{padding-left:20px;padding-right:20px\}\
+footer\{padding:28px 20px;flex-direction:column;text-align:center\}\
+.hero-stats\{flex-wrap:wrap;gap:20px\}\
+.stat-item\{border-right:none!important;padding:0!important\}\
+.pr-top\{flex-direction:column;align-items:flex-start\}\
+.pr-note\{text-align:left\}\
+.tr-grid\{grid-template-columns:1fr\}\
+.feat-grid\{grid-template-columns:1fr\}\
+.feat-card\{border-radius:0!important\}\
+.feat-card:first-child\{border-radius:14px 14px 0 0!important\}\
+.feat-card:last-child\{border-radius:0 0 14px 14px!important\}\
+.ball-trail\{font-size:52px\}\
+.intro-logo\{font-size:44px;letter-spacing:7px\}\
+\}\
+</style>\
+\
+</head>\
+<body>\
+\
+<!-- INTRO -->\
+\
+<div id="intro">\
+  <div class="streak s1"></div>\
+  <div class="streak s2"></div>\
+  <div class="streak s3"></div>\
+  <div class="ball-trail">\uc0\u9917 </div>\
+  <div class="intro-logo">MATCHIUM</div>\
+  <div class="intro-sub">\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </div>\
+</div>\
+\
+<!-- SITE -->\
+\
+<div id="site">\
+<div class="blob blob1"></div>\
+<div class="blob blob2"></div>\
+\
+<nav>\
+  <a class="nav-logo" href="#">MATCHIUM</a>\
+  <div class="nav-links">\
+    <a class="nav-link" href="#how">\uc0\u1050 \u1072 \u1082  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090 </a>\
+    <a class="nav-link" href="#pricing">\uc0\u1062 \u1077 \u1085 \u1099 </a>\
+    <a class="nav-cta" href="https://t.me/matchium_bot" target="_blank">\uc0\u1054 \u1090 \u1082 \u1088 \u1099 \u1090 \u1100  \u1073 \u1086 \u1090 \u1072  \u8594 </a>\
+  </div>\
+</nav>\
+\
+<!-- HERO -->\
+\
+<section class="hero">\
+  <div class="hero-inner">\
+    <div>\
+      <div class="hero-eyebrow"><div class="ey-dot"></div><span class="ey-text">\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \'b7 Telegram</span></div>\
+      <h1><span class="l1">\uc0\u1044 \u1040 \u1053 \u1053 \u1067 \u1045 </span><span class="l2">\u1053 \u1045 </span><span class="l3">\u1052 \u1053 \u1045 \u1053 \u1048 \u1071 </span></h1>\
+      <p class="hero-desc">\uc0\u1055 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1099 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1083 \u1102 \u1073 \u1086 \u1075 \u1086  \u1084 \u1072 \u1090 \u1095 \u1072  \'97 \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1075 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1080  \u1095 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 . \u1055 \u1088 \u1103 \u1084 \u1086  \u1074  Telegram, \u1079 \u1072  <strong>49 \u8381 </strong>.</p>\
+      <div class="hero-actions">\
+        <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank">\
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>\
+          \uc0\u1055 \u1086 \u1087 \u1088 \u1086 \u1073 \u1086 \u1074 \u1072 \u1090 \u1100  \u1079 \u1072  49 \u8381 \
+        </a>\
+        <a href="#how" class="btn-ghost">\uc0\u1050 \u1072 \u1082  \u1101 \u1090 \u1086  \u1088 \u1072 \u1073 \u1086 \u1090 \u1072 \u1077 \u1090  \u8594 </a>\
+      </div>\
+      <div class="hero-stats">\
+        <div class="stat-item"><div class="stat-num">49\uc0\u8381 </div><div class="stat-label">\u1086 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div></div>\
+        <div class="stat-item"><div class="stat-num">3 \uc0\u1052 \u1048 \u1053 </div><div class="stat-label">\u1076 \u1086  \u1087 \u1086 \u1083 \u1091 \u1095 \u1077 \u1085 \u1080 \u1103  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1072 </div></div>\
+        <div class="stat-item"><div class="stat-num">1200+</div><div class="stat-label">\uc0\u1083 \u1080 \u1075  \u1074  \u1073 \u1072 \u1079 \u1077 </div></div>\
+        <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">\uc0\u1073 \u1077 \u1079  \u1074 \u1099 \u1093 \u1086 \u1076 \u1085 \u1099 \u1093 </div></div>\
+      </div>\
+    </div>\
+\
+```\
+<!-- TG CARD \'97 rich example -->\
+<div class="hero-card">\
+  <div class="hcg1"></div><div class="hcg2"></div>\
+  <div class="tg-phone">\
+    <div class="tg-bar">\
+      <div class="tg-ava">M</div>\
+      <div><div class="tg-nm">Matchium</div><div class="tg-on">\uc0\u9679  \u1086 \u1085 \u1083 \u1072 \u1081 \u1085 </div></div>\
+    </div>\
+    <div class="tg-body">\
+      <div class="tg-msg">\
+        <div class="tm-t">\uc0\u9917  \u1047 \u1077 \u1085 \u1080 \u1090  \'97 \u1062 \u1057 \u1050 \u1040 </div>\
+        <span class="tm-b">Matchium \'b7 \uc0\u1072 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 </span>\
+\
+        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
+        <div class="tm-sh">\uc0\u55357 \u56522  \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
+        <div class="fl">\
+          <b>\uc0\u1047 \u1077 \u1085 \u1080 \u1090 :</b><br>\u55357 \u57314  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314  \u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57314  \u55357 \u57314  \u55357 \u57313 <br>\
+          <b>\uc0\u1062 \u1057 \u1050 \u1040 :</b><br>\u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314  \u55357 \u57314  \u55357 \u56628  \u55357 \u57314  \u55357 \u57313  \u55357 \u57314 \
+        </div>\
+\
+        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
+        <div class="tm-sh">\uc0\u55357 \u56520  \u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \'b7 10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 </div>\
+        <div class="sb">\
+          <b>\uc0\u1047 \u1077 \u1085 \u1080 \u1090 :</b> \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 22 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 9 \'b7 \u1042 /\u1053 /\u1055 : 7/2/1<br>\
+          \uc0\u1044 \u1086 \u1084 \u1072  \u1042 /\u1053 /\u1055 : 4/1/0 \'b7 \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 13 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 4<br>\
+          <b>\uc0\u1062 \u1057 \u1050 \u1040 :</b> \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 17 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 12 \'b7 \u1042 /\u1053 /\u1055 : 6/2/2<br>\
+          \uc0\u1053 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \u1042 /\u1053 /\u1055 : 2/1/2 \'b7 \u1047 \u1072 \u1073 \u1080 \u1090 \u1086 : 6 \'b7 \u1055 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1086 : 8\
+        </div>\
+\
+        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
+        <div class="tm-sh">\uc0\u55357 \u56589  \u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 </div>\
+        <div class="ap">\uc0\u1047 \u1077 \u1085 \u1080 \u1090  \u1076 \u1086 \u1084 \u1072  \'97 \u1076 \u1088 \u1091 \u1075 \u1072 \u1103  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 \u1072 . 4 \u1087 \u1086 \u1073 \u1077 \u1076 \u1099  \u1080 \u1079  5 \u1076 \u1086 \u1084 \u1072 \u1096 \u1085 \u1080 \u1093  \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 , 13 \u1079 \u1072 \u1073 \u1080 \u1090 \u1099 \u1093  \u1087 \u1088 \u1080  \u1083 \u1080 \u1096 \u1100  4 \u1087 \u1088 \u1086 \u1087 \u1091 \u1097 \u1077 \u1085 \u1085 \u1099 \u1093  \'97 \u1083 \u1091 \u1095 \u1096 \u1080 \u1081  \u1087 \u1086 \u1082 \u1072 \u1079 \u1072 \u1090 \u1077 \u1083 \u1100  \u1089 \u1088 \u1077 \u1076 \u1080  \u1090 \u1086 \u1087 -6 \u1056 \u1055 \u1051 . \u1057 \u1088 \u1077 \u1076 \u1085 \u1103 \u1103  \u1088 \u1077 \u1079 \u1091 \u1083 \u1100 \u1090 \u1072 \u1090 \u1080 \u1074 \u1085 \u1086 \u1089 \u1090 \u1100  2.6 \u1075 \u1086 \u1083 \u1072  \u1079 \u1072  \u1076 \u1086 \u1084 \u1072 \u1096 \u1085 \u1080 \u1081  \u1084 \u1072 \u1090 \u1095 .</div>\
+        <div class="ap">\uc0\u1062 \u1057 \u1050 \u1040  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \u1088 \u1077 \u1079 \u1082 \u1086  \u1089 \u1076 \u1072 \u1105 \u1090 : \u1090 \u1086 \u1083 \u1100 \u1082 \u1086  2 \u1087 \u1086 \u1073 \u1077 \u1076 \u1099  \u1080 \u1079  5, \u1087 \u1088 \u1086 \u1087 \u1091 \u1089 \u1082 \u1072 \u1077 \u1090  \u1074  \u1089 \u1088 \u1077 \u1076 \u1085 \u1077 \u1084  1.6 \u1079 \u1072  \u1080 \u1075 \u1088 \u1091 . \u1042  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1093  3 \u1074 \u1099 \u1077 \u1079 \u1076 \u1085 \u1099 \u1093  \u1084 \u1072 \u1090 \u1095 \u1072 \u1093  \'97 0 \u1095 \u1080 \u1089 \u1090 \u1099 \u1093  \u1083 \u1080 \u1089 \u1090 \u1086 \u1074 . \u1040 \u1090 \u1072 \u1082 \u1072  \u1074  \u1075 \u1086 \u1089 \u1090 \u1103 \u1093  \u1079 \u1072 \u1073 \u1080 \u1074 \u1072 \u1077 \u1090  1.2 \u1074  \u1089 \u1088 \u1077 \u1076 \u1085 \u1077 \u1084 .</div>\
+        <div class="ap">\uc0\u1056 \u1072 \u1079 \u1085 \u1080 \u1094 \u1072  \u1074  xG (\u1086 \u1078 \u1080 \u1076 \u1072 \u1077 \u1084 \u1099 \u1093  \u1075 \u1086 \u1083 \u1072 \u1093 ) \u1076 \u1086 \u1087 \u1086 \u1083 \u1085 \u1080 \u1090 \u1077 \u1083 \u1100 \u1085 \u1086  \u1087 \u1086 \u1076 \u1090 \u1074 \u1077 \u1088 \u1078 \u1076 \u1072 \u1077 \u1090  \u1087 \u1088 \u1077 \u1080 \u1084 \u1091 \u1097 \u1077 \u1089 \u1090 \u1074 \u1086  \u1093 \u1086 \u1079 \u1103 \u1077 \u1074 : \u1047 \u1077 \u1085 \u1080 \u1090  \u1076 \u1086 \u1084 \u1072  \u1089 \u1086 \u1079 \u1076 \u1072 \u1105 \u1090  2.1 xG, \u1062 \u1057 \u1050 \u1040  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077  \'97 1.0 xG \u1087 \u1088 \u1086 \u1090 \u1080 \u1074 .</div>\
+\
+        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
+        <div class="tm-sh">\uc0\u55356 \u57263  \u1042 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
+        <div class="vb"><b>\uc0\u1055 1 + \u1058 \u1041  2.5</b> \'97 \u1047 \u1077 \u1085 \u1080 \u1090  \u1074 \u1099 \u1080 \u1075 \u1088 \u1099 \u1074 \u1072 \u1077 \u1090  \u1076 \u1086 \u1084 \u1072  \u1074  80% \u1089 \u1083 \u1091 \u1095 \u1072 \u1077 \u1074  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1093  10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 . \u1062 \u1057 \u1050 \u1040  \u1074 \u1099 \u1077 \u1079 \u1076 \u1085 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1086 \u1076 \u1085 \u1072  \u1080 \u1079  \u1093 \u1091 \u1076 \u1096 \u1080 \u1093  \u1074  \u1083 \u1080 \u1075 \u1077 . \u1054 \u1073 \u1072  \u1082 \u1083 \u1091 \u1073 \u1072  \u1088 \u1077 \u1079 \u1091 \u1083 \u1100 \u1090 \u1072 \u1090 \u1080 \u1074 \u1085 \u1099  \'97 \u1084 \u1072 \u1090 \u1095  \u1076 \u1086 \u1083 \u1078 \u1077 \u1085  \u1073 \u1099 \u1090 \u1100  \u1075 \u1086 \u1083 \u1077 \u1074 \u1099 \u1084 .</div>\
+\
+        <div class="tm-d">\uc0\u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 \u9473 </div>\
+        <div class="tm-sh">\uc0\u9888 \u65039  \u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </div>\
+        <div class="rb">\uc0\u1044 \u1077 \u1088 \u1073 \u1080  \u1074 \u1089 \u1077 \u1075 \u1076 \u1072  \u1085 \u1077 \u1087 \u1088 \u1077 \u1076 \u1089 \u1082 \u1072 \u1079 \u1091 \u1077 \u1084 \u1086  \'97 \u1084 \u1086 \u1090 \u1080 \u1074 \u1072 \u1094 \u1080 \u1103  \u1062 \u1057 \u1050 \u1040  \u1074  \u1087 \u1088 \u1080 \u1085 \u1094 \u1080 \u1087 \u1080 \u1072 \u1083 \u1100 \u1085 \u1086 \u1084  \u1084 \u1072 \u1090 \u1095 \u1077  \u1084 \u1086 \u1078 \u1077 \u1090  \u1074 \u1099 \u1088 \u1086 \u1074 \u1085 \u1103 \u1090 \u1100  \u1096 \u1072 \u1085 \u1089 \u1099  \u1074 \u1085 \u1077  \u1079 \u1072 \u1074 \u1080 \u1089 \u1080 \u1084 \u1086 \u1089 \u1090 \u1080  \u1086 \u1090  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1080 .</div>\
+\
+        <span class="tm-f">Matchium \'b7 @matchium_bot</span>\
+        <div class="tm-ti">19:34 \uc0\u10003 \u10003 </div>\
+      </div>\
+    </div>\
+  </div>\
+</div>\
+```\
+\
+  </div>\
+</section>\
+\
+<!-- MARQUEE -->\
+\
+<div class="mq-wrap">\
+  <div class="mq-track">\
+    <div class="mq-item"><span>\uc0\u9917 </span> \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56522 </span> \u1043 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
+    <div class="mq-item"><span>\uc0\u55356 \u57263 </span> \u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
+    <div class="mq-item"><span>\uc0\u9889 </span> 3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099 </div>\
+    <div class="mq-item"><span>\uc0\u55356 \u57101 </span> 1200+ \u1083 \u1080 \u1075 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56594 </span> \u1054 \u1087 \u1083 \u1072 \u1090 \u1072  \u1057 \u1041 \u1055 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56561 </span> \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  Telegram</div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56499 </span> 49 \u8381  \u1079 \u1072  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
+    <div class="mq-item"><span>\uc0\u9917 </span> \u1060 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56522 </span> \u1043 \u1086 \u1083 \u1077 \u1074 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
+    <div class="mq-item"><span>\uc0\u55356 \u57263 </span> \u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
+    <div class="mq-item"><span>\uc0\u9889 </span> 3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099 </div>\
+    <div class="mq-item"><span>\uc0\u55356 \u57101 </span> 1200+ \u1083 \u1080 \u1075 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56594 </span> \u1054 \u1087 \u1083 \u1072 \u1090 \u1072  \u1057 \u1041 \u1055 </div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56561 </span> \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  Telegram</div>\
+    <div class="mq-item"><span>\uc0\u55357 \u56499 </span> 49 \u8381  \u1079 \u1072  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
+  </div>\
+</div>\
+\
+<!-- WHAT YOU GET -->\
+\
+<section class="what-sec">\
+  <div class="what-in">\
+    <div class="what-head reveal">\
+      <div class="s-ey">\uc0\u1063 \u1090 \u1086  \u1074 \u1085 \u1091 \u1090 \u1088 \u1080 </div>\
+      <h2 class="s-title">\uc0\u1063 \u1058 \u1054  \u1042 \u1067  \u1055 \u1054 \u1051 \u1059 \u1063 \u1040 \u1045 \u1058 \u1045 </h2>\
+      <p class="s-sub">\uc0\u1053 \u1077  \'ab\u1084 \u1085 \u1077  \u1082 \u1072 \u1078 \u1077 \u1090 \u1089 \u1103  \u1087 \u1086 \u1073 \u1077 \u1076 \u1080 \u1090 \'bb \'97 \u1082 \u1086 \u1085 \u1082 \u1088 \u1077 \u1090 \u1085 \u1099 \u1077  \u1095 \u1080 \u1089 \u1083 \u1072 , \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076  \u1080  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1085 \u1099 \u1081  \u1074 \u1099 \u1074 \u1086 \u1076 .</p>\
+    </div>\
+    <div class="feat-grid reveal">\
+      <div class="feat-card">\
+        <div class="feat-num">01</div>\
+        <div class="feat-ic">\uc0\u55357 \u56522 </div>\
+        <div class="feat-t">\uc0\u1042 \u1080 \u1079 \u1091 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1092 \u1086 \u1088 \u1084 \u1072 </div>\
+        <div class="feat-b">\uc0\u1058 \u1086 \u1095 \u1082 \u1080  \u55357 \u57314 \u55357 \u57313 \u55357 \u56628  \u1079 \u1072  \u1087 \u1086 \u1089 \u1083 \u1077 \u1076 \u1085 \u1080 \u1077  10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081  \'97 \u1089 \u1077 \u1088 \u1080 \u1102  \u1074 \u1080 \u1076 \u1085 \u1086  \u1086 \u1076 \u1085 \u1080 \u1084  \u1074 \u1079 \u1075 \u1083 \u1103 \u1076 \u1086 \u1084  \u1073 \u1077 \u1079  \u1095 \u1090 \u1077 \u1085 \u1080 \u1103  \u1090 \u1077 \u1082 \u1089 \u1090 \u1072 .</div>\
+      </div>\
+      <div class="feat-card">\
+        <div class="feat-num">02</div>\
+        <div class="feat-ic">\uc0\u55357 \u56520 </div>\
+        <div class="feat-t">\uc0\u1043 \u1083 \u1091 \u1073 \u1086 \u1082 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 </div>\
+        <div class="feat-b">\uc0\u1043 \u1086 \u1083 \u1099 , \u1042 /\u1053 /\u1055  \u1076 \u1086 \u1084 \u1072  \u1080  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077 , xG \'97 \u1074 \u1089 \u1105  \u1088 \u1072 \u1079 \u1073 \u1080 \u1090 \u1086  \u1087 \u1086  \u1083 \u1086 \u1082 \u1072 \u1094 \u1080 \u1080 . \u1058 \u1086 \u1083 \u1100 \u1082 \u1086  \u1092 \u1072 \u1082 \u1090 \u1099 .</div>\
+      </div>\
+      <div class="feat-card">\
+        <div class="feat-num">03</div>\
+        <div class="feat-ic">\uc0\u55356 \u57263 </div>\
+        <div class="feat-t">\uc0\u1063 \u1105 \u1090 \u1082 \u1080 \u1081  \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090 </div>\
+        <div class="feat-b">\uc0\u1054 \u1076 \u1085 \u1072  \u1082 \u1086 \u1085 \u1082 \u1088 \u1077 \u1090 \u1085 \u1072 \u1103  \u1080 \u1076 \u1077 \u1103  \u1089  \u1095 \u1080 \u1089 \u1083 \u1086 \u1074 \u1099 \u1084  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1080 \u1077 \u1084 . \u1053 \u1077  \u1088 \u1072 \u1079 \u1084 \u1099 \u1090 \u1099 \u1077  \u1087 \u1088 \u1086 \u1075 \u1085 \u1086 \u1079 \u1099  \'97 \u1087 \u1086 \u1079 \u1080 \u1094 \u1080 \u1103  \u1089  \u1072 \u1088 \u1075 \u1091 \u1084 \u1077 \u1085 \u1090 \u1072 \u1084 \u1080 .</div>\
+      </div>\
+      <div class="feat-card">\
+        <div class="feat-num">04</div>\
+        <div class="feat-ic">\uc0\u9888 \u65039 </div>\
+        <div class="feat-t">\uc0\u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </div>\
+        <div class="feat-b">\uc0\u1063 \u1077 \u1089 \u1090 \u1085 \u1086  \u1087 \u1088 \u1077 \u1076 \u1091 \u1087 \u1088 \u1077 \u1078 \u1076 \u1072 \u1077 \u1084  \u1086  \u1090 \u1086 \u1084 , \u1095 \u1090 \u1086  \u1084 \u1086 \u1078 \u1077 \u1090  \u1086 \u1087 \u1088 \u1086 \u1074 \u1077 \u1088 \u1075 \u1085 \u1091 \u1090 \u1100  \u1074 \u1099 \u1074 \u1086 \u1076 . \u1055 \u1086 \u1090 \u1086 \u1084 \u1091  \u1095 \u1090 \u1086  \u1090 \u1072 \u1082  \u1095 \u1077 \u1089 \u1090 \u1085 \u1086 .</div>\
+      </div>\
+    </div>\
+  </div>\
+</section>\
+\
+<!-- HOW -->\
+\
+<section class="how-sec" id="how">\
+  <div class="how-in">\
+    <div class="reveal"><div class="s-ey">\uc0\u1055 \u1088 \u1086 \u1094 \u1077 \u1089 \u1089 </div><h2 class="s-title">\u1058 \u1056 \u1048  \u1064 \u1040 \u1043 \u1040 </h2><p class="s-sub">\u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1081  \u1088 \u1077 \u1075 \u1080 \u1089 \u1090 \u1088 \u1072 \u1094 \u1080 \u1080 , \u1082 \u1072 \u1073 \u1080 \u1085 \u1077 \u1090 \u1086 \u1074  \u1080  \u1086 \u1078 \u1080 \u1076 \u1072 \u1085 \u1080 \u1103 .</p></div>\
+    <div class="steps reveal">\
+      <div class="step">\
+        <div class="step-n">01</div><div class="step-i">\uc0\u9997 \u65039 </div>\
+        <div class="step-h">\uc0\u1055 \u1080 \u1096 \u1077 \u1096 \u1100  \u1084 \u1072 \u1090 \u1095 </div>\
+        <div class="step-p">\uc0\u1054 \u1090 \u1087 \u1088 \u1072 \u1074 \u1083 \u1103 \u1077 \u1096 \u1100  \u1073 \u1086 \u1090 \u1091  \u1085 \u1072 \u1079 \u1074 \u1072 \u1085 \u1080 \u1103  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076  \u1074  \u1083 \u1102 \u1073 \u1086 \u1084  \u1092 \u1086 \u1088 \u1084 \u1072 \u1090 \u1077  \'97 \'ab\u1047 \u1077 \u1085 \u1080 \u1090  \u1057 \u1087 \u1072 \u1088 \u1090 \u1072 \u1082 \'bb, \'ab\u1056 \u1077 \u1072 \u1083  \'97 \u1041 \u1072 \u1088 \u1089 \u1072 \'bb, \u1085 \u1072  \u1088 \u1091 \u1089 \u1089 \u1082 \u1086 \u1084  \u1080 \u1083 \u1080  \u1072 \u1085 \u1075 \u1083 \u1080 \u1081 \u1089 \u1082 \u1086 \u1084 .</div>\
+        <div class="step-a">\uc0\u8594 </div>\
+      </div>\
+      <div class="step">\
+        <div class="step-n">02</div><div class="step-i">\uc0\u55357 \u56499 </div>\
+        <div class="step-h">\uc0\u1054 \u1087 \u1083 \u1072 \u1095 \u1080 \u1074 \u1072 \u1077 \u1096 \u1100 </div>\
+        <div class="step-p">\uc0\u1041 \u1086 \u1090  \u1092 \u1086 \u1088 \u1084 \u1080 \u1088 \u1091 \u1077 \u1090  \u1089 \u1089 \u1099 \u1083 \u1082 \u1091  \u1085 \u1072  \u1086 \u1087 \u1083 \u1072 \u1090 \u1091  \u1095 \u1077 \u1088 \u1077 \u1079  \u1070 \u1050 \u1072 \u1089 \u1089 \u1091 . \u1057 \u1041 \u1055  \u1080 \u1083 \u1080  \u1083 \u1102 \u1073 \u1072 \u1103  \u1082 \u1072 \u1088 \u1090 \u1072 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  \u1073 \u1086 \u1090 \u1091  \'97 \u1074 \u1089 \u1105  \u1095 \u1077 \u1088 \u1077 \u1079  \u1073 \u1072 \u1085 \u1082 .</div>\
+        <div class="step-a">\uc0\u8594 </div>\
+      </div>\
+      <div class="step">\
+        <div class="step-n">03</div><div class="step-i">\uc0\u55357 \u56552 </div>\
+        <div class="step-h">\uc0\u1055 \u1086 \u1083 \u1091 \u1095 \u1072 \u1077 \u1096 \u1100  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
+        <div class="step-p">\uc0\u1063 \u1077 \u1088 \u1077 \u1079  3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099  \u1074  \u1095 \u1072 \u1090  \u1087 \u1088 \u1080 \u1093 \u1086 \u1076 \u1080 \u1090  \u1087 \u1086 \u1083 \u1085 \u1072 \u1103  \u1072 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1082 \u1072 : \u1092 \u1086 \u1088 \u1084 \u1072  \u1082 \u1086 \u1084 \u1072 \u1085 \u1076 , \u1076 \u1077 \u1090 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1089 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072 , \u1074 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \u1080  \u1075 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 .</div>\
+      </div>\
+    </div>\
+  </div>\
+</section>\
+\
+<!-- PRICING -->\
+\
+<section class="pr-sec" id="pricing">\
+  <div class="pr-in">\
+    <div class="pr-top reveal">\
+      <div><div class="s-ey">\uc0\u1058 \u1072 \u1088 \u1080 \u1092 \u1099 </div><h2 class="s-title">\u1055 \u1056 \u1054 \u1057 \u1058 \u1054 <br>\u1048  \u1063 \u1045 \u1057 \u1058 \u1053 \u1054 </h2></div>\
+      <div class="pr-note">\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1080 \u1079  \u1087 \u1072 \u1082 \u1077 \u1090 \u1072  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 . \u1055 \u1083 \u1072 \u1090 \u1080 \u1096 \u1100  \u1086 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079  \'97 \u1080 \u1089 \u1087 \u1086 \u1083 \u1100 \u1079 \u1091 \u1077 \u1096 \u1100  \u1082 \u1086 \u1075 \u1076 \u1072  \u1085 \u1091 \u1078 \u1085 \u1086 .</div>\
+    </div>\
+    <div class="pr-cards reveal">\
+      <div class="pc">\
+        <div class="pc-nm">\uc0\u1054 \u1076 \u1080 \u1085  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </div>\
+        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>49</div>\
+        <div class="pc-pe">\uc0\u1079 \u1072  \u1084 \u1072 \u1090 \u1095 </div>\
+        <div class="pc-ln"></div>\
+        <ul class="pc-li">\
+          <li>\uc0\u1042 \u1080 \u1079 \u1091 \u1072 \u1083 \u1100 \u1085 \u1072 \u1103  \u1092 \u1086 \u1088 \u1084 \u1072  (10 \u1084 \u1072 \u1090 \u1095 \u1077 \u1081 )</li>\
+          <li>\uc0\u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1076 \u1086 \u1084 \u1072  \u1080  \u1085 \u1072  \u1074 \u1099 \u1077 \u1079 \u1076 \u1077 </li>\
+          <li>\uc0\u1040 \u1085 \u1072 \u1083 \u1080 \u1090 \u1080 \u1095 \u1077 \u1089 \u1082 \u1080 \u1081  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 </li>\
+          <li>\uc0\u1042 \u1077 \u1088 \u1076 \u1080 \u1082 \u1090  \u1089  \u1086 \u1073 \u1086 \u1089 \u1085 \u1086 \u1074 \u1072 \u1085 \u1080 \u1077 \u1084 </li>\
+          <li>\uc0\u1043 \u1083 \u1072 \u1074 \u1085 \u1099 \u1081  \u1088 \u1080 \u1089 \u1082 </li>\
+        </ul>\
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">\uc0\u1055 \u1086 \u1087 \u1088 \u1086 \u1073 \u1086 \u1074 \u1072 \u1090 \u1100  \u8594 </a>\
+      </div>\
+      <div class="pc feat">\
+        <div class="pc-hot">\uc0\u1055 \u1086 \u1087 \u1091 \u1083 \u1103 \u1088 \u1085 \u1099 \u1081 </div>\
+        <div class="pc-nm">\uc0\u1055 \u1072 \u1082 \u1077 \u1090  5 \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074 </div>\
+        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>179</div>\
+        <div class="pc-pe">\uc0\u1074 \u1084 \u1077 \u1089 \u1090 \u1086  245 \u8381 </div>\
+        <div class="pc-sv">\uc0\u1069 \u1082 \u1086 \u1085 \u1086 \u1084 \u1080 \u1103  27%</div>\
+        <div class="pc-ln"></div>\
+        <ul class="pc-li">\
+          <li>5 \uc0\u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074  \u1085 \u1072  \u1073 \u1072 \u1083 \u1072 \u1085 \u1089 \u1077 </li>\
+          <li>\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 </li>\
+          <li>\uc0\u1040 \u1082 \u1090 \u1080 \u1074 \u1080 \u1088 \u1091 \u1077 \u1090 \u1089 \u1103  \u1084 \u1075 \u1085 \u1086 \u1074 \u1077 \u1085 \u1085 \u1086 </li>\
+          <li>\uc0\u1042 \u1089 \u1077  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1080  \u1073 \u1072 \u1079 \u1086 \u1074 \u1086 \u1075 \u1086 </li>\
+          <li>\uc0\u1059 \u1076 \u1086 \u1073 \u1085 \u1086  \u1076 \u1083 \u1103  \u1089 \u1077 \u1088 \u1080 \u1080  \u1090 \u1091 \u1088 \u1086 \u1074 </li>\
+        </ul>\
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-s" target="_blank">\uc0\u1050 \u1091 \u1087 \u1080 \u1090 \u1100  \u1087 \u1072 \u1082 \u1077 \u1090  \u8594 </a>\
+      </div>\
+      <div class="pc">\
+        <div class="pc-nm">\uc0\u1055 \u1072 \u1082 \u1077 \u1090  10 \u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074 </div>\
+        <div class="pc-am"><span class="pc-cu">\uc0\u8381 </span>299</div>\
+        <div class="pc-pe">\uc0\u1074 \u1084 \u1077 \u1089 \u1090 \u1086  490 \u8381 </div>\
+        <div class="pc-sv">\uc0\u1069 \u1082 \u1086 \u1085 \u1086 \u1084 \u1080 \u1103  39%</div>\
+        <div class="pc-ln"></div>\
+        <ul class="pc-li">\
+          <li>10 \uc0\u1088 \u1072 \u1079 \u1073 \u1086 \u1088 \u1086 \u1074  \u1085 \u1072  \u1073 \u1072 \u1083 \u1072 \u1085 \u1089 \u1077 </li>\
+          <li>\uc0\u1041 \u1072 \u1083 \u1072 \u1085 \u1089  \u1085 \u1077  \u1089 \u1075 \u1086 \u1088 \u1072 \u1077 \u1090 </li>\
+          <li>\uc0\u1040 \u1082 \u1090 \u1080 \u1074 \u1080 \u1088 \u1091 \u1077 \u1090 \u1089 \u1103  \u1084 \u1075 \u1085 \u1086 \u1074 \u1077 \u1085 \u1085 \u1086 </li>\
+          <li>\uc0\u1042 \u1089 \u1077  \u1092 \u1091 \u1085 \u1082 \u1094 \u1080 \u1080  \u1073 \u1072 \u1079 \u1086 \u1074 \u1086 \u1075 \u1086 </li>\
+          <li>\uc0\u1051 \u1091 \u1095 \u1096 \u1080 \u1081  \u1074 \u1099 \u1073 \u1086 \u1088  \u1085 \u1072  \u1089 \u1077 \u1079 \u1086 \u1085 </li>\
+        </ul>\
+        <a href="https://t.me/matchium_bot" class="pc-btn pc-o" target="_blank">\uc0\u1050 \u1091 \u1087 \u1080 \u1090 \u1100  \u1087 \u1072 \u1082 \u1077 \u1090  \u8594 </a>\
+      </div>\
+    </div>\
+  </div>\
+</section>\
+\
+<!-- TRUST -->\
+\
+<section class="tr-sec">\
+  <div class="tr-grid reveal">\
+    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56594 </div><div class="tr-t">\u1041 \u1077 \u1079 \u1086 \u1087 \u1072 \u1089 \u1085 \u1072 \u1103  \u1086 \u1087 \u1083 \u1072 \u1090 \u1072 </div><div class="tr-b">\u1057 \u1041 \u1055  \u1080  \u1082 \u1072 \u1088 \u1090 \u1099  \u1095 \u1077 \u1088 \u1077 \u1079  \u1070 \u1050 \u1072 \u1089 \u1089 \u1091 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1080 \u1093  \u1076 \u1072 \u1085 \u1085 \u1099 \u1093  \u1073 \u1086 \u1090 \u1091  \'97 \u1074 \u1089 \u1105  \u1095 \u1077 \u1088 \u1077 \u1079  \u1073 \u1072 \u1085 \u1082 .</div></div>\
+    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56545 </div><div class="tr-t">\u1054 \u1092 \u1080 \u1094 \u1080 \u1072 \u1083 \u1100 \u1085 \u1099 \u1077  \u1076 \u1072 \u1085 \u1085 \u1099 \u1077 </div><div class="tr-b">\u1057 \u1090 \u1072 \u1090 \u1080 \u1089 \u1090 \u1080 \u1082 \u1072  \u1080 \u1079  \u1087 \u1088 \u1086 \u1092 \u1077 \u1089 \u1089 \u1080 \u1086 \u1085 \u1072 \u1083 \u1100 \u1085 \u1086 \u1081  \u1073 \u1072 \u1079 \u1099  \'97 1200+ \u1083 \u1080 \u1075  \u1084 \u1080 \u1088 \u1072 , \u1086 \u1073 \u1085 \u1086 \u1074 \u1083 \u1103 \u1077 \u1090 \u1089 \u1103  \u1087 \u1086 \u1089 \u1083 \u1077  \u1082 \u1072 \u1078 \u1076 \u1086 \u1075 \u1086  \u1084 \u1072 \u1090 \u1095 \u1072 .</div></div>\
+    <div class="tr-item"><div class="tr-ic">\uc0\u9889 </div><div class="tr-t">3 \u1084 \u1080 \u1085 \u1091 \u1090 \u1099  \'97 \u1075 \u1072 \u1088 \u1072 \u1085 \u1090 \u1080 \u1103 </div><div class="tr-b">\u1055 \u1086 \u1089 \u1083 \u1077  \u1086 \u1087 \u1083 \u1072 \u1090 \u1099  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1087 \u1088 \u1080 \u1093 \u1086 \u1076 \u1080 \u1090  \u1072 \u1074 \u1090 \u1086 \u1084 \u1072 \u1090 \u1080 \u1095 \u1077 \u1089 \u1082 \u1080 . \u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1075 \u1086  \u1088 \u1091 \u1095 \u1085 \u1086 \u1075 \u1086  \u1090 \u1088 \u1091 \u1076 \u1072 .</div></div>\
+    <div class="tr-item"><div class="tr-ic">\uc0\u55357 \u56492 </div><div class="tr-t">\u1055 \u1086 \u1076 \u1076 \u1077 \u1088 \u1078 \u1082 \u1072  24/7</div><div class="tr-b">\u1063 \u1090 \u1086 -\u1090 \u1086  \u1087 \u1086 \u1096 \u1083 \u1086  \u1085 \u1077  \u1090 \u1072 \u1082  \'97 \u1074 \u1077 \u1088 \u1085 \u1105 \u1084  \u1076 \u1077 \u1085 \u1100 \u1075 \u1080  \u1080 \u1083 \u1080  \u1089 \u1076 \u1077 \u1083 \u1072 \u1077 \u1084  \u1088 \u1072 \u1079 \u1073 \u1086 \u1088  \u1087 \u1086 \u1074 \u1090 \u1086 \u1088 \u1085 \u1086 .</div></div>\
+  </div>\
+</section>\
+\
+<!-- CTA -->\
+\
+<section class="cta-sec">\
+  <div class="cta-in reveal">\
+    <h2 class="cta-h"><span class="c1">\uc0\u1040 \u1053 \u1040 \u1051 \u1048 \u1058 \u1048 \u1050 \u1040 </span><span class="c2">\u1055 \u1045 \u1056 \u1042 \u1067 \u1049  \u1056 \u1040 \u1047 \u1041 \u1054 \u1056 </span><span class="c3">\u1047 \u1040  49 \u1056 \u1059 \u1041 \u1051 \u1045 \u1049 </span></h2>\
+    <p class="cta-p">\uc0\u1053 \u1080 \u1082 \u1072 \u1082 \u1086 \u1081  \u1088 \u1077 \u1075 \u1080 \u1089 \u1090 \u1088 \u1072 \u1094 \u1080 \u1080 . \u1054 \u1090 \u1082 \u1088 \u1099 \u1074 \u1072 \u1077 \u1096 \u1100  \u1073 \u1086 \u1090  \'97 \u1080  \u1089 \u1088 \u1072 \u1079 \u1091  \u1082  \u1076 \u1077 \u1083 \u1091 .</p>\
+    <div class="cta-pill">MATCHIUM \'b7 \uc0\u1040 \u1053 \u1040 \u1051 \u1048 \u1058 \u1048 \u1050 \u1040  \u1052 \u1040 \u1058 \u1063 \u1045 \u1049  \'b7 @matchium_bot</div>\
+    <br><br>\
+    <a href="https://t.me/matchium_bot" class="btn-primary" target="_blank" style="display:inline-flex;margin-top:8px">\
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.012 9.483c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.738z"/></svg>\
+      \uc0\u1054 \u1090 \u1082 \u1088 \u1099 \u1090 \u1100  \u1074  Telegram\
+    </a>\
+  </div>\
+</section>\
+\
+<footer>\
+  <div class="f-logo">MATCHIUM</div>\
+  <div class="f-links"><a href="/oferta.html">\uc0\u1055 \u1091 \u1073 \u1083 \u1080 \u1095 \u1085 \u1072 \u1103  \u1086 \u1092 \u1077 \u1088 \u1090 \u1072 </a><a href="https://t.me/matchium_bot" target="_blank">@matchium_bot</a></div>\
+  <div class="f-copy">\'a9 2025 Matchium</div>\
+</footer>\
+\
+</div>\
+\
+<script>\
+window.addEventListener('load',()=>\{\
+  const intro=document.getElementById('intro');\
+  const site=document.getElementById('site');\
+  setTimeout(()=>\{\
+    intro.classList.add('done');\
+    site.classList.add('visible');\
+    setTimeout(()=>intro.style.display='none',800);\
+  \},2000);\
+\});\
+\
+const obs=new IntersectionObserver((entries)=>\{\
+  entries.forEach(e=>\{if(e.isIntersecting)\{e.target.classList.add('on');obs.unobserve(e.target)\}\});\
+\},\{threshold:.08,rootMargin:'0px 0px -40px 0px'\});\
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));\
+\
+document.querySelectorAll('.pr-cards .pc,.steps .step,.tr-grid .tr-item,.feat-grid .feat-card').forEach((el,i)=>\{\
+  el.style.transitionDelay=(i*.09)+'s';\
+\});\
+</script>\
+\
+</body>\
+</html>}
